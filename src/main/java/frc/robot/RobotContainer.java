@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.Trajectories;
+import frc.robot.constants.VisionConstants;
 import frc.robot.constants.DriveConstants.CONTROLLER_TYPE;
 import frc.robot.commands.BasicAutoCG;
 import frc.robot.commands.auto.NomadPathFollowerCommandBuilder;
@@ -60,7 +61,7 @@ public class RobotContainer {
     fwdBackAxis = () -> -driveController.getRawAxis(DriveConstants.AXIS_DRIVE_FWD_BACK);
     //Initializes the driveStickC command inline. Simply passes the drive controller axes into the drivebaseS arcadeDrive.
     driveStickC = new RunCommand(() -> drivebaseS.arcadeDrive(-driveController.getRawAxis(DriveConstants.AXIS_DRIVE_FWD_BACK), driveController.getRawAxis(DriveConstants.AXIS_DRIVE_TURN)), drivebaseS);
-    visionAlignC = new DrivebaseVisionC(drivebaseS, fwdBackAxis);
+    visionAlignC = new DrivebaseVisionC(drivebaseS, VisionConstants.VISION_PIPELINE);
     //Turn off LiveWindow telemetry. We don't use it and it takes 90% of the loop time.
     LiveWindow.disableAllTelemetry();
     // Configure the button bindings

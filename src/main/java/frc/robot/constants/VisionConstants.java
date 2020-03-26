@@ -19,6 +19,11 @@ public class VisionConstants {
     /**
      * Vision Pipeline Preset, should be in this state at all times
      */
-    public static final double VISION_PIPELINE = 4;
+    public static final int VISION_PIPELINE = 4;
+
+    public static final double HORIZONTAL_ERROR = 2;
+    public static final double VERTICAL_ERROR = 2;
+
+    public static final double SET_POINT_COUNT = 10;
 
 }
