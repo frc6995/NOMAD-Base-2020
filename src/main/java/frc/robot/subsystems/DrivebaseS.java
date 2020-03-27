@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
@@ -21,19 +14,21 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Preferences;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
 import frc.utility.NomadUnits;
 import frc.wrappers.MotorControllers.NomadTalonSRX;
 import frc.wrappers.MotorControllers.NomadVictorSPX;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * This subsystem is for the drivetrain, which is made up of two master Talons
  * and two sets of Victors, each on a side of the drivetrain.
  */
-public class DrivebaseS implements Subsystem {
+public class DrivebaseS extends SubsystemBase implements Loggable {
   /**
    * The left master NomadTalonSRX
    */
@@ -61,6 +56,7 @@ public class DrivebaseS implements Subsystem {
   /**
    * Our NavX gyro.
    */
+  @Log.Gyro(name="navX")
   private AHRS gyro;
 
   /**

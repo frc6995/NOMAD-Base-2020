@@ -1,125 +1,50 @@
 package frc.robot.commands.drivebase;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Preferences;
-import frc.robot.Preferences;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.DrivebaseS;
+import frc.robot.subsystems.LimelightS;
 
 /**
- * VisionAlignC
+ * VisionAlignC uses the Limelight PID and the drivebase
+ * to accurately position the robot relative to a target.
  * 
- * Processes data from Network tables using a Proportional controller in order
- * to Aim the shooter at the top power port
- * 
- * @author Ari Shashivkopanazak, Shueja
+ * @author Ari Shashivkopanazak, Shueja, Sammcdo
  */
 public class DrivebaseVisionC extends CommandBase {
   DrivebaseS drivebase;
-  /**
-   * selects our pipline as an argument
-   */
-  private int selector;
+  LimelightS limelight;
+
   private DifferentialDriveWheelSpeeds wheelSpeeds; 
-  /**
-   * PIDController for turning. should input degrees and output rad/sec.
-   */
-  PIDController turnPid = new PIDController(Preferences.VISION_KP_HORIZONTAL.getValue(), 0, 0);
-  /**
-   * PIDController for distance. should input degrees and output m/sec.
-   */
-  PIDController distPid = new PIDController(Preferences.VISION_KP_VERTICAL.getValue(), 0, 0);
 
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-  /**
-   * Get the offset values from network table
-   */
-  NetworkTableEntry txEntry = table.getEntry("tx");
-  NetworkTableEntry tyEntry = table.getEntry("ty");
-
-  /**
-   * Get the current LED mode
-   */
-  NetworkTableEntry ledModeEntry = table.getEntry("ledmode");
-
-  /**
-   * Get the current Pipeline, may not need
-   */
-  NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
-
-  /**
-   * Error of our offsets
-   */
-  private double horizontalError = 0.0;
-  private double verticalError = 0.0;
-
-  /**
-   * The Target Position
-   */
-  private double horizontalTarget = 0.0;
-  private double verticalTarget = 0.0;
-
-  /**
-   * The valid range in +/- degrees to call the aiming valid
-   */
-  private double horizontalRange = 1;
-  private double verticalRange = 1;
-
-  /**
-   * Adjustment values
-   */
+  // Adjustment values
   private double horizontalAdjust = 0.0;
   private double verticalAdjust = 0.0;
 
-  /**
-   * Ramps our PID to full over the period of ramp time
-   */
+  /** Ramps our PID to full over the period of ramp time */
   private double clampValue = 0.0;
 
-  /**
-   * Determines if this is the first loop in the target Range
-   */
+  /** Determines if this is the first loop in the target Range */
   private boolean firstLoop = true;
 
-  /**
-   * Increments if we are in the target zone
-   */
-  private int sumInRange = 0;
-
-  /**
-   * Increment limit to be called a successful aim
-   */
-  private int waitInRange = 10;
-
-  /**
-   * General WPILIB Timer
-   */
+  //General WPILIB Timer
   private Timer rampTimer = new Timer();
 
   /**
-   * Allows the Robot to Aim the shooter at the top power port Default state: Sets
-   * Pipeline to Vision Align Turns off LEDs
+   * Allows the Robot to Aim the shooter at a target.
    * 
    * @param drivebaseS The DrivebaseS object to use.
    */
-  public DrivebaseVisionC(DrivebaseS drivebaseS, int pipeline) {
-    pipelineEntry.setDouble(VisionConstants.VISION_PIPELINE);
-    ledModeEntry.setDouble(0);
+  public DrivebaseVisionC(DrivebaseS drivebaseS, LimelightS limelightS, int pipeline) {
     addRequirements(drivebaseS);
     drivebase = drivebaseS;
-    turnPid.setTolerance(horizontalRange);
-    distPid.setTolerance(verticalRange);
-    selector = pipeline;
+    limelight = limelightS;
   }
 
   /**
@@ -129,9 +54,6 @@ public class DrivebaseVisionC extends CommandBase {
   public void initialize() {
 
     firstLoop = true;
-
-    turnPid.setSetpoint(0);
-    distPid.setSetpoint(0);
   }
 
   /**
@@ -151,20 +73,9 @@ public class DrivebaseVisionC extends CommandBase {
       rampTimer.start();
       firstLoop = false;
     }
-    turnPid.setP(Preferences.VISION_KP_HORIZONTAL.getValue());
-    distPid.setP(Preferences.VISION_KP_VERTICAL.getValue());
 
-    pipelineEntry.setDouble(selector);
-    ledModeEntry.setDouble(0);
-
-    horizontalTarget = txEntry.getDouble(0);
-    verticalTarget = tyEntry.getDouble(0);
-
-    horizontalError = -horizontalTarget;
-    verticalError = -verticalTarget;
-
-    horizontalAdjust = turnPid.calculate(horizontalError);
-    verticalAdjust = distPid.calculate(verticalError);
+    horizontalAdjust = limelight.getHorizontalAdjust();
+    verticalAdjust = limelight.getVerticalAdjust();
 
     clampValue = MathUtil.clamp(rampTimer.get() / VisionConstants.VISION_RAMP_TIME, -1, 1);
 
@@ -184,8 +95,6 @@ public class DrivebaseVisionC extends CommandBase {
     rampTimer.stop();
     rampTimer.reset();
     firstLoop = true;
-    pipelineEntry.setDouble(VisionConstants.VISION_PIPELINE);
-    ledModeEntry.setDouble(0);
   }
 
   /**
@@ -195,17 +104,6 @@ public class DrivebaseVisionC extends CommandBase {
    */
   @Override
   public boolean isFinished() {
-    if (turnPid.atSetpoint() && distPid.atSetpoint()) {
-      sumInRange++;
-    }
-    else {
-      sumInRange = 0;
-    }
-    if (sumInRange >= waitInRange) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return limelight.atSetPoint();
   }
 }
