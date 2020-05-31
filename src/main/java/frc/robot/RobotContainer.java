@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.Trajectories;
 import frc.robot.constants.VisionConstants;
@@ -16,6 +17,7 @@ import frc.robot.commands.auto.NomadPathFollowerCommandBuilder;
 import frc.robot.commands.drivebase.DrivebaseVisionC;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.LimelightS;
+import frc.utility.Point2d;
 import io.github.oblarg.oblog.annotations.Log;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -49,6 +51,8 @@ public class RobotContainer {
   private DoubleSupplier fwdBackAxis;
   private final DrivebaseVisionC visionAlignC; 
 
+  private Point2d point = new Point2d(0.7, 0.4);
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -70,6 +74,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     drivebaseS.setDefaultCommand(driveStickC);
+
+    Shuffleboard.getTab("TEST")
+                .add("Test Point", point)
+                .withWidget("MyPoint2D");
   }
 
   /**
