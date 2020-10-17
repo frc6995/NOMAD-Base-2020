@@ -20,6 +20,7 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
   public DrivebaseArcadeDriveStickC(DrivebaseS drivebase, NomadDriverController stick) {
     drivebaseS = drivebase;
     addRequirements(drivebaseS);
+    driveStick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,13 +31,11 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
 
   @Override
   public void execute() {
-    //A compounded function: processOutputs(calculateOutputs(getInputs()))
+    //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
-      drivebaseS.leftTalon, 
-      drivebaseS.rightTalon, 
       drivebaseS.arcadeDriveController(
-        driveStick.getFwdBackAxis(), 
-        driveStick.getLeftRightAxis()));
+        driveStick.getFwdBackAxisValue(), 
+        driveStick.getLeftRightAxisValue()));
   }
 
   @Override

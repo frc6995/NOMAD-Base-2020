@@ -28,7 +28,7 @@ public class NomadDriverController extends GenericHID {
      * @param profile the DriverControllerProfile for the driver controller in use.
      */
     public NomadDriverController(DriverControllerProfile profile){
-        super(profile.usbPort);
+        super(profile.getUsbPort());
         controllerProfile = profile;
 
     }
@@ -37,16 +37,16 @@ public class NomadDriverController extends GenericHID {
      * Asks the controller profile for the result of its custom defined behavior. By default, this is simply getRawAxis on the corresponding axis, but can be overridden.
      * @return the result of the controller profile's customFwdBackAxis method.
      */
-    public double getFwdBackAxis(){
-        return controllerProfile.customFwdBackAxis(this);
+    public double getFwdBackAxisValue(){
+        return controllerProfile.getFwdBackAxisValue(this);
     }
 
     /**
      * Asks the controller profile for the result of its custom defined behavior. By default, this is simply getRawAxis on the corresponding axis, but can be overridden.
      * @return the result of the controller profile's customLeftRightAxis method.
      */
-    public double getLeftRightAxis(){
-        return controllerProfile.customLeftRightAxis(this);
+    public double getLeftRightAxisValue(){
+        return controllerProfile.getLeftRightAxisValue(this);
     }
 
     /**

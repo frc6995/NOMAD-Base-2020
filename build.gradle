@@ -17,14 +17,14 @@ deploy {
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
             // want to store a team number in this file.
-            team = frc.robot.getDebugOrDefault(6995)
+            team = 6995
         }
     }
     artifacts {
         frcJavaArtifact('frcJava') {
             targets << "roborio"
             // Debug can be overridden by command line, for use with VSCode
-            debug = frc.robot.getDebugOrDefault(false)
+            debug = frc.getDebugOrDefault(false)
         }
         // Built in artifact to deploy arbitrary files to the roboRIO.
         fileTreeArtifact('frcStaticFileDeploy') {
@@ -52,8 +52,9 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.+"
+    // testImplementation 'junit:junit:4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging

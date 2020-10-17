@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
 import frc.robot.controllerprofiles.XboxControllerTriggerDriveProfile;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.wrappers.InputDevices.NomadDriverController;
@@ -25,22 +26,29 @@ import frc.robot.wrappers.InputDevices.NomadDriverController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivebaseS drivebaseS = new DrivebaseS();
-
-  private NomadDriverController driverController = new NomadDriverController(new XboxControllerTriggerDriveProfile());
-
+ 
+  private NomadDriverController driverController = 
+    new NomadDriverController(new OGXboxControllerTriggerDriveProfile());
+  private final DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC =
+    new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    configureDefaultCommands();
     configureButtonBindings();
   }
 
+  private void configureDefaultCommands() {
+    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+  }
+
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     

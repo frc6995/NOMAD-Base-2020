@@ -5,23 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.utility.inputs;
-
-import edu.wpi.first.wpilibj.GenericHID;
+package frc.robot.utility.math;
 
 /**
  * Add your docs here.
  */
-public abstract class DriverControllerProfile {
-    public abstract int getUsbPort();
-    public abstract int getFwdBackAxisID();
-    public abstract int getLeftRightAxisID();
-
-    //Custom behaviors.
-    public double getFwdBackAxisValue(GenericHID controller){
-        return controller.getRawAxis(getFwdBackAxisID());
-    }
-    public double getLeftRightAxisValue(GenericHID controller){
-        return controller.getRawAxis(getLeftRightAxisID());
+public final class NomadMathUtil {
+    public static double lerp(double value, double min1, double max1, double min2, double max2){
+        double percent = (value-min1) / (max1 - min1);
+        double output = min2 + (percent* (max2-min2));
+        return output;
     }
 }

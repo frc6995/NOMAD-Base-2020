@@ -25,8 +25,11 @@ public class DrivebaseS extends SubsystemBase {
   public DrivebaseS() {
     leftTalon = new NomadTalonSRX(10);
     rightTalon = new NomadTalonSRX(11); // TODO Refactor into constants file.
-    //Instantiate commands
-    
+    //Instantiate commands 
+  }
+  public DrivebaseS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX){
+    leftTalon = leftTalonSRX;
+    rightTalon = rightTalonSRX;
   }
 
   @Override
@@ -34,10 +37,6 @@ public class DrivebaseS extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
-  public void setDefaultCommand() {
-
-  }
   /**
    * Basic arcade drive. Converts joystick inputs into percent outputs for each side of the drivebase.
    * @param fwdBack The joystick input for the forward/back axis. It is assumed that a value of 1 represents forward, and -1 represents backward.
@@ -52,5 +51,9 @@ public class DrivebaseS extends SubsystemBase {
   public void drivePercentages(NomadTalonSRX leftTalon, NomadTalonSRX rightTalon, DrivebaseWheelPercentages percentages){
     leftTalon.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
     rightTalon.set(ControlMode.PercentOutput, percentages.getRightPercentage());
+  }
+
+  public void drivePercentages(DrivebaseWheelPercentages percentages){
+    drivePercentages(leftTalon, rightTalon, percentages);
   }
 }
