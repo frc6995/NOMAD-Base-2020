@@ -17,13 +17,17 @@ import frc.robot.utility.math.NomadMathUtil;
 public class OGXboxControllerTriggerDriveProfile extends DriverControllerProfile {
     private final int usbPort = 0;
     private final int fwdBackAxis = 1; //TODO update with actual mappings
-    private final int leftRightAxis = 2;
-    private final int leftTriggerAxis = 3;
-    private final int rightTriggerAxis = 4;
+    private final int leftRightAxis = 0;
+    private final int leftTriggerAxis = 4;
+    private final int rightTriggerAxis = 5;
     @Override
     public double getFwdBackAxisValue(GenericHID controller){
         return NomadMathUtil.lerp(controller.getRawAxis(leftTriggerAxis), -1.0, 1.0, 0.0, 1.0) 
              - NomadMathUtil.lerp(controller.getRawAxis(rightTriggerAxis), -1.0, 1.0, 0.0, 1.0);
+    }
+    @Override
+    public double getLeftRightAxisValue(GenericHID controller) { //For This controller, the left joystick x axis (ID 0) needs to be inverted.
+        return -super.getLeftRightAxisValue(controller);
     }
 
     @Override
