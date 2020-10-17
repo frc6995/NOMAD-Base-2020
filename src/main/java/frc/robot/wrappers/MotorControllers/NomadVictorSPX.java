@@ -1,4 +1,4 @@
-package frc.wrappers.MotorControllers;
+package frc.robot.wrappers.MotorControllers;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;

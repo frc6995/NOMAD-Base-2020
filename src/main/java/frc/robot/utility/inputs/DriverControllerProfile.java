@@ -5,11 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.utility.drivebase;
+package frc.robot.utility.inputs;
+
+import edu.wpi.first.wpilibj.GenericHID;
 
 /**
- * A data carrier that 
+ * Add your docs here.
  */
-final class DrivebaseState {
-    double leftControlMode;
+public abstract class DriverControllerProfile {
+    public int usbPort;
+    public int fwdBackAxis;
+    public int leftRightAxis;
+    public double customFwdBackAxis(GenericHID controller){
+        return controller.getRawAxis(fwdBackAxis);
+    }
+    public double customLeftRightAxis(GenericHID controller){
+        return controller.getRawAxis(leftRightAxis);
+    }
 }

@@ -1,4 +1,4 @@
-package frc.wrappers.MotorControllers;
+package frc.robot.wrappers.MotorControllers;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -48,4 +48,6 @@ public class NomadTalonSRX extends WPI_TalonSRX{
         this(port, inverted);
         this.follow(master);
     }
+
+    
 }
