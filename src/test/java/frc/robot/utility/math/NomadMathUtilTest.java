@@ -7,9 +7,18 @@
 
 package frc.robot.utility.math;
 
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
 /**
  * Add your docs here.
+ * 
  */
+
 public class NomadMathUtilTest {
-    
+    @Test   
+    public void LerpTest(){
+        assertEquals(150.0, NomadMathUtil.lerp(0, 100, 0.5), 0.01);
+        assertEquals(100.0, NomadMathUtil.lerp(0, 50, 2), 0.01);
+    }
 }
