@@ -43,8 +43,8 @@ public class DrivebaseS extends SubsystemBase {
    * @param leftRight The joystick input for the left/right axis. It is assumed that 1 represents left point turn, and -1 represents right point turn.
    */
   public DrivebaseWheelPercentages arcadeDriveController(double fwdBack, double leftRight) {
-    double leftPercent = MathUtil.clamp((fwdBack + leftRight), -1, 1); 
-    double rightPercent = MathUtil.clamp((fwdBack - leftRight), -1, 1);
+    double leftPercent = fwdBack + leftRight; //will be clamped when they are put in the DrivebaseWheelPercentages 
+    double rightPercent = fwdBack - leftRight;
     return new DrivebaseWheelPercentages().setLeftPercentage(leftPercent).setRightPercentage(rightPercent);
   }
 
