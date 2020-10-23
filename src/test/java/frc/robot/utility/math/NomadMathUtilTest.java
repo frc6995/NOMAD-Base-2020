@@ -7,9 +7,28 @@
 
 package frc.robot.utility.math;
 
+import static org.junit.Assert.assertEquals;
+
+
+import org.junit.Test;
+
 /**
- * Add your docs here.
+ * Test for NomadMathUtil
  */
 public class NomadMathUtilTest {
-    
+    @Test
+    public void lerpTestInsideRangeSuccess(){
+        //Test case for mapping -1..1 to 0..1
+        assertEquals(0.5, NomadMathUtil.lerp(0, -1, 1, 0, 1), 0.001);
+    }
+    @Test
+    public void lerpTestOutsideRangeSuccess(){
+        assertEquals(21.0, NomadMathUtil.lerp(10, 0, 1, 1, 3), 0.001); 
+    }
+
+    @Test
+    public void lerpTestDivByZeroFail(){
+        assertEquals(Double.NaN, NomadMathUtil.lerp(0, 0, 0, 0, 0), 0.001);
+        
+    }
 }
