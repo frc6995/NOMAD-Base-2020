@@ -25,10 +25,6 @@ public class OGXboxControllerTriggerDriveProfile extends DriverControllerProfile
         return NomadMathUtil.lerp(controller.getRawAxis(leftTriggerAxis), -1.0, 1.0, 0.0, 1.0) 
              - NomadMathUtil.lerp(controller.getRawAxis(rightTriggerAxis), -1.0, 1.0, 0.0, 1.0);
     }
-    @Override
-    public double getLeftRightAxisValue(GenericHID controller) { //For This controller, the left joystick x axis (ID 0) needs to be inverted.
-        return -super.getLeftRightAxisValue(controller);
-    }
 
     @Override
     public int getUsbPort() {
