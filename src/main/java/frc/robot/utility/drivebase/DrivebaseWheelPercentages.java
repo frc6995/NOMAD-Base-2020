@@ -17,12 +17,12 @@ public class DrivebaseWheelPercentages {
     double rightPercentage;
 
     public DrivebaseWheelPercentages setLeftPercentage(double left) {
-        this.leftPercentage = MathUtil.clamp(left, -1, 1);
+        this.leftPercentage = left;
         return this;
     }
 
     public DrivebaseWheelPercentages setRightPercentage(double right) {
-        this.rightPercentage = MathUtil.clamp(right, -1, 1);
+        this.rightPercentage = right;
         return this;
     }
 
@@ -32,6 +32,12 @@ public class DrivebaseWheelPercentages {
 
     public double getRightPercentage(){
         return rightPercentage;
+    }
+
+    public DrivebaseWheelPercentages clamp(){
+        this.leftPercentage = MathUtil.clamp(this.leftPercentage, -1, 1);
+        this.rightPercentage = MathUtil.clamp(this.rightPercentage, -1, 1);
+        return this;
     }
 
 }

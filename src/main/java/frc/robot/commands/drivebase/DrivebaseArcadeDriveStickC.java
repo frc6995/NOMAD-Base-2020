@@ -35,7 +35,9 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
     drivebaseS.drivePercentages(
       drivebaseS.arcadeDriveController(
         driveStick.getFwdBackAxisValue(), 
-        driveStick.getLeftRightAxisValue()));
+        driveStick.getLeftRightAxisValue()
+      ).clamp()
+    );
   }
 
   @Override
