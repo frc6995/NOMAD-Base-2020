@@ -16,4 +16,8 @@ public final class NomadMathUtil {
         double output = min2 + (percent* (max2-min2));
         return output;
     }
+        
+    public static double lerp(double min, double max, double value) {
+        return (1 - value) * min + value * max;
+      }
 }

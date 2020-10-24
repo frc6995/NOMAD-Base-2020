@@ -14,7 +14,9 @@ import org.junit.Test;
 
 /**
  * Test for NomadMathUtil
+
  */
+
 public class NomadMathUtilTest {
     @Test
     public void lerpTestInsideRangeSuccess(){
@@ -29,6 +31,5 @@ public class NomadMathUtilTest {
     @Test
     public void lerpTestDivByZeroFail(){
         assertEquals(Double.NaN, NomadMathUtil.lerp(0, 0, 0, 0, 0), 0.001);
-        
     }
 }
