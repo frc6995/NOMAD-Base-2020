@@ -34,7 +34,6 @@ import frc.robot.wrappers.MotorControllers.NomadTalonSRX;
 /**
  * Add your docs here.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DrivebaseSTest {
     NomadTalonSRX leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
     NomadTalonSRX rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
