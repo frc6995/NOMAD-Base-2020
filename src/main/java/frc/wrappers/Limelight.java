@@ -30,6 +30,8 @@ public class Limelight implements Sendable {
 
         private final int value;
 
+        int what;xx
+
         LedState(final int newValue)
         {
             value = newValue;
@@ -51,6 +53,8 @@ public class Limelight implements Sendable {
     public enum CameraMode {
         Driver(1), 
         Vision(0);
+
+        int what;
 
         private final int value;
 
