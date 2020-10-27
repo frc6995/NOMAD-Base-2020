@@ -54,8 +54,6 @@ public class Limelight implements Sendable {
         Driver(1), 
         Vision(0);
 
-        int what;
-
         private final int value;
 
         CameraMode(int newValue)
