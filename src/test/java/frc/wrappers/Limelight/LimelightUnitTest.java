@@ -10,7 +10,6 @@ package frc.wrappers.Limelight;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Limelight unit test
@@ -26,16 +25,20 @@ public class LimelightUnitTest {
 
         assertEquals("Has target test", false, tester.hasTarget());        
     }
-    
+        
     @Test
     public void offsetTest(){
         Limelight tester = new Limelight("name");        
 
-        assertEquals("X offset test", 0, tester.getXOffset(), 0.1);
+        assertEquals("X offset test", 2, tester.getXOffset(), 0.1);
     }
 
     @Test
     public void compareEnums(){
-        assertEquals("Enum test", Limelight.LedState.Blink, Limelight.LedState.Blink);
+        Limelight tester = new Limelight("name");
+
+        tester.setLedMode(Limelight.LedState.Blink);
+
+        assertEquals("Enum test", Limelight.LedState.Blink, tester.getLEDMode());
     }
 }
