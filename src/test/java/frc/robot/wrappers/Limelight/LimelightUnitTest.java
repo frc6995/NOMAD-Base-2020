@@ -11,21 +11,29 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import frc.robot.wrappers.Limelight.Limelight.LedState;
+
 /**
  * Limelight unit test
  */
 public class LimelightUnitTest {
 
+    /**
+     * Test to see if the Limelight's hasTarget method works.
+     * A non-existent (fake) Limelight should not have a target.
+     */
     @Test
     public void targetTest(){
         
         Limelight tester = new Limelight("name");
 
-        tester.setLedMode(Limelight.LedState.Blink);
-
         assertEquals("Has target test", false, tester.hasTarget());        
     }
     
+    /**
+     * Test the getXOffset() method.
+     * A non-existent (fake) Limelight should have no x-offset
+     */
     @Test
     public void offsetTest(){
         Limelight tester = new Limelight("name");        
@@ -33,12 +41,42 @@ public class LimelightUnitTest {
         assertEquals("X offset test", 0, tester.getXOffset(), 0.1);
     }
 
+    /**
+     * Test the Limelight's LED Mode by setting it to Blink.
+     * The result should be the LED Mode equaling Blink.
+     */
     @Test
-    public void testLEDModes(){
+    public void testLEDModesValid(){
         Limelight tester = new Limelight("name");
 
         tester.setLedMode(Limelight.LedState.Blink);
 
-        assertEquals("Enum test", Limelight.LedState.Blink, tester.getLEDMode());
+        assertEquals("LED Mode test (valid)", LedState.Blink, tester.getLEDMode());
+    }
+
+    /**
+     * Tests the Limelight's LED Mode by setting it to null.
+     * The result should be the mode getting set to Off instead.
+     */
+    @Test
+    public void testLEDModesInvalid1(){
+        Limelight tester = new Limelight("name");
+
+        tester.setLedMode(null);
+
+        assertEquals("Null LED Mode test", LedState.Off, tester.getLEDMode());
+    }
+
+    /**
+     * Tests the Limelight's LED Mode by setting it to a non-existent state.
+     * The result should be the mode getting set to Off instead.
+     */
+    @Test
+    public void testLEDModesInvalid2(){
+        Limelight tester = new Limelight("name");
+
+        tester.setLedMode(LedState.getState(15));
+
+        assertEquals("Out of bounds LED Mode test", LedState.Off, tester.getLEDMode());
     }
 }

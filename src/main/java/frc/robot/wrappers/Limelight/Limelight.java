@@ -60,6 +60,9 @@ public class Limelight implements Sendable {
                 case 3:
                     state = On;
                     break;
+                default:
+                    state = null;
+                    break;
             }
 
             return state;
@@ -238,7 +241,7 @@ public class Limelight implements Sendable {
      */
     public void setLedMode(LedState state) {
         // Set the state without a switch
-        set("ledMode", state.getValue());
+        set("ledMode", state != null ? state.getValue() : LedState.Off.getValue());
     }
 
     public LedState getLEDMode(){
