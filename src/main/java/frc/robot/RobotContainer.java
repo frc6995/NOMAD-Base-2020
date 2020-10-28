@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.robot.constants.AutoConstants;
+import frc.robot.constants.AutoConstantsKRen;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
-import frc.robot.controllerprofiles.XboxControllerTriggerDriveProfile;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.wrappers.InputDevices.NomadDriverController;
 
@@ -24,24 +27,66 @@ import frc.robot.wrappers.InputDevices.NomadDriverController;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DrivebaseS drivebaseS = new DrivebaseS();
- 
-  private NomadDriverController driverController = 
-    new NomadDriverController(new OGXboxControllerTriggerDriveProfile());
-  private final DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC =
-    new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
+  //Constants Files
+  private AutoConstants autoConstants;
+  private DriveConstants driveConstants;
+  //Subsystems
+  private DrivebaseS drivebaseS;
+  //Commands
+  private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
+  //Controller Profiles
+  private OGXboxControllerTriggerDriveProfile ogXboxControllerTriggerDriveProfile;
+  //Controllers
+  private NomadDriverController driverController;
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
   public RobotContainer() {
-    // Configure the button bindings
+    createConstantsFiles();
+    createSubsystems();
+    createCommands();
     configureDefaultCommands();
+    createControllerProfiles();
+    createControllers();
     configureButtonBindings();
   }
 
+  /**
+   * Creates the constants files for each subsystem.
+   */
+  private void createConstantsFiles() {
+    driveConstants = new DriveConstantsKRen();
+    autoConstants = new AutoConstantsKRen(driveConstants);
+  }
+  /**
+   * Creates the subsystem.
+   */
+  private void createSubsystems() {
+    drivebaseS = new DrivebaseS(driveConstants, autoConstants);
+  }
+  /**
+   * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
+   */
+  private void createCommands() {
+    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
+  }
+  /**
+   * Configures the default Commands for the subsystems.
+   */
   private void configureDefaultCommands() {
     drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+  }
+  /**
+   * Instantiates the various controller profiles for optional use.
+   */
+  private void createControllerProfiles() {
+    ogXboxControllerTriggerDriveProfile = new OGXboxControllerTriggerDriveProfile();
+  }
+  /**
+   * Creates the user controllers.
+   */
+  private void createControllers() {
+    driverController = new NomadDriverController(ogXboxControllerTriggerDriveProfile);
   }
 
   /**
@@ -51,9 +96,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -8,25 +8,19 @@
 package frc.robot.subsystems;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
 import frc.robot.wrappers.MotorControllers.NomadTalonSRX;

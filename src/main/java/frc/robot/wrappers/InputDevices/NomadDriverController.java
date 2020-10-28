@@ -7,8 +7,6 @@
 
 package frc.robot.wrappers.InputDevices;
 
-import java.util.function.DoubleConsumer;
-
 import edu.wpi.first.wpilibj.GenericHID;
 
 import frc.robot.utility.inputs.DriverControllerProfile;

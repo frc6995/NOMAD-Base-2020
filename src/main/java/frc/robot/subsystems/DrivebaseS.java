@@ -7,28 +7,30 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.wrappers.MotorControllers.NomadTalonSRX;
-import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.robot.constants.AutoConstants;
+import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
 
 public class DrivebaseS extends SubsystemBase {
   public NomadTalonSRX leftTalon;
   public NomadTalonSRX rightTalon;
-  public DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
+  private DriveConstants driveConstants;
+  private AutoConstants autoConstants;
+
   /**
    * Creates a new DrivebaseS.
    */
-  public DrivebaseS() {
-    leftTalon = new NomadTalonSRX(10);
-    rightTalon = new NomadTalonSRX(11); // TODO Refactor into constants file.
-    //Instantiate commands 
+  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
+    this.driveConstants = driveConstants;
+    this.autoConstants = autoConstants;
+    leftTalon = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
+    rightTalon = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster()); // TODO Refactor into constants file.
   }
+
   public DrivebaseS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX){
     leftTalon = leftTalonSRX;
     rightTalon = rightTalonSRX;
