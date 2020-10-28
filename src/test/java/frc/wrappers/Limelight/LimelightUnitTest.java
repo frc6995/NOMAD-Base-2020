@@ -17,11 +17,13 @@ import org.junit.Test;
 public class LimelightUnitTest {
 
     @Test
-    public void testConstructors(){
+    public void testEnums(){
         
         Limelight tester = new Limelight("name");
 
-        assertEquals("X offset test", 0, tester.getXOffset(), 0.001);
+        tester.setLedMode(Limelight.LedState.Blink);
+
+        assertEquals("X offset test", 0, tester.getXOffset(), 0.1);
         
     }
 }
