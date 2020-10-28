@@ -16,7 +16,7 @@ import frc.robot.utility.math.NomadMathUtil;
  */
 public class OGXboxControllerTriggerDriveProfile extends DriverControllerProfile {
     private final int usbPort = 0;
-    private final int fwdBackAxis = 1; //TODO update with actual mappings
+    private final int fwdBackAxis = 1;
     private final int leftRightAxis = 0;
     private final int leftTriggerAxis = 4;
     private final int rightTriggerAxis = 5;

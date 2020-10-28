@@ -16,9 +16,9 @@ import frc.robot.utility.inputs.DriverControllerProfile;
 public class XboxControllerTriggerDriveProfile extends DriverControllerProfile {
     private int usbPort = 0;
     private int fwdBackAxis = 1; //TODO update with actual mappings
-    private int leftRightAxis = 2;
-    private int leftTriggerAxis = 3;
-    private int rightTriggerAxis = 4;
+    private int leftRightAxis = 0;
+    private int leftTriggerAxis = 4;
+    private int rightTriggerAxis = 5;
     @Override
     public double getFwdBackAxisValue(GenericHID controller){
         return controller.getRawAxis(leftTriggerAxis) - controller.getRawAxis(rightTriggerAxis);

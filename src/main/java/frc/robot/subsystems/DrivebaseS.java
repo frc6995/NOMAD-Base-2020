@@ -25,10 +25,10 @@ public class DrivebaseS extends SubsystemBase {
    * Creates a new DrivebaseS.
    */
   public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
-    this.driveConstants = driveConstants;
+    this.driveConstants = driveConstants; // TODO is this right?
     this.autoConstants = autoConstants;
     leftTalon = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
-    rightTalon = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster()); // TODO Refactor into constants file.
+    rightTalon = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
   }
 
   public DrivebaseS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX){
