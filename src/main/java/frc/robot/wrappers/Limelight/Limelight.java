@@ -266,16 +266,16 @@ public class Limelight implements Sendable {
     }
 
     private double get(String varName) {
-        return NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName).getDouble(0);
+        return NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName).getDouble(0);
     }
 
     private double[] getArray(String varName) {
-        return NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName)
+        return NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName)
                 .getDoubleArray(new double[0]);
     }
 
     private void set(String varName, double value) {
-        NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName).setNumber(value);
+        NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName).setNumber(value);
     }
 
     private String getTableName() {
