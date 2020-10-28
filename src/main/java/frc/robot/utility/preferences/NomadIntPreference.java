@@ -1,25 +1,25 @@
-package frc.utility.preferences;
+package frc.robot.utility.preferences;
 
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
- * A class to create a double type preference.
+ * A class to create an int type preference.
  */
-public class NomadDoublePreference extends NomadPreference {
-    public double defaultValue;
+public class NomadIntPreference extends NomadPreference {
+    public int defaultValue;
     protected String prefName;
 
     /**
-     * Create a double preference with a name and default value
+     * Create an int preference with a name and default value
      * and add it to preferences if it doesn't already exist
      * @param name
      * @param defaultVal
     */
-    public NomadDoublePreference(String name, double defaultVal) {
+    public NomadIntPreference(String name, int defaultVal) {
         defaultValue = defaultVal;
         prefName = name;
         if (!Preferences.getInstance().containsKey(prefName)) {
-            Preferences.getInstance().putDouble(prefName, defaultValue);
+            Preferences.getInstance().putInt(prefName, defaultValue);
         }
     }
 
@@ -28,12 +28,12 @@ public class NomadDoublePreference extends NomadPreference {
      * whether its using defaults
      * @return value
      */
-    public double getValue() {
+    public int getValue() {
         if (isUsingDefaults()) {
             return defaultValue;
         }
         else {
-            return Preferences.getInstance().getDouble(prefName, defaultValue);
+            return Preferences.getInstance().getInt(prefName, defaultValue);
         }
     }
 }

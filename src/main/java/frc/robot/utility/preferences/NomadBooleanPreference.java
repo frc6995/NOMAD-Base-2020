@@ -1,25 +1,25 @@
-package frc.utility.preferences;
+package frc.robot.utility.preferences;
 
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
- * A class to create an int type preference.
+ * A class to create a boolean type preference.
  */
-public class NomadIntPreference extends NomadPreference {
-    public int defaultValue;
+public class NomadBooleanPreference extends NomadPreference {
+    public boolean defaultValue;
     protected String prefName;
 
     /**
-     * Create an int preference with a name and default value
+     * Create a boolean preference with a name and default value
      * and add it to preferences if it doesn't already exist
      * @param name
      * @param defaultVal
     */
-    public NomadIntPreference(String name, int defaultVal) {
+    public NomadBooleanPreference(String name, boolean defaultVal) {
         defaultValue = defaultVal;
         prefName = name;
         if (!Preferences.getInstance().containsKey(prefName)) {
-            Preferences.getInstance().putInt(prefName, defaultValue);
+            Preferences.getInstance().putBoolean(prefName, defaultValue);
         }
     }
 
@@ -28,12 +28,12 @@ public class NomadIntPreference extends NomadPreference {
      * whether its using defaults
      * @return value
      */
-    public int getValue() {
+    public boolean getValue() {
         if (isUsingDefaults()) {
             return defaultValue;
         }
         else {
-            return Preferences.getInstance().getInt(prefName, defaultValue);
+            return Preferences.getInstance().getBoolean(prefName, defaultValue);
         }
     }
 }

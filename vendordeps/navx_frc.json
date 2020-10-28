@@ -1,12 +1,12 @@
 {
-    "fileName": "navx_frc.json",
+    "fileName": "navx_frc.robot.json",
     "name": "KauaiLabs_navX_FRC",
     "version": "3.1.400",
     "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
     "mavenUrls": [
         "https://repo1.maven.org/maven2/"
     ],
-    "jsonUrl": "https://www.kauailabs.com/dist/frc/2020/navx_frc.json",
+    "jsonUrl": "https://www.kauailabs.com/dist/frc/2020/navx_frc.robot.json",
     "javaDependencies": [
         {
             "groupId": "com.kauailabs.navx.frc",

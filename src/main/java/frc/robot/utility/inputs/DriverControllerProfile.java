@@ -5,20 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.utility;
+package frc.robot.utility.inputs;
 
-import frc.robot.constants.DriveConstants;
+import edu.wpi.first.wpilibj.GenericHID;
 
 /**
  * Add your docs here.
  */
-public class NomadUnits {
+public abstract class DriverControllerProfile {
+    public abstract int getUsbPort();
+    public abstract int getFwdBackAxisID();
+    public abstract int getLeftRightAxisID();
 
-    public static double DBTicksToMeters (double ticks) {
-        return Math.PI * DriveConstants.kWheelDiameter * ticks / DriveConstants.ENCODER_CNTS_PER_WHEEL_REV;
+    //Custom behaviors.
+    public double getFwdBackAxisValue(GenericHID controller){
+        return controller.getRawAxis(getFwdBackAxisID());
     }
-
-    public static double DBMetersToTicks (double meters) {
-        return (meters / (DriveConstants.kWheelDiameter * Math.PI) * DriveConstants.ENCODER_CNTS_PER_WHEEL_REV); 
+    public double getLeftRightAxisValue(GenericHID controller){
+        return controller.getRawAxis(getLeftRightAxisID());
     }
 }

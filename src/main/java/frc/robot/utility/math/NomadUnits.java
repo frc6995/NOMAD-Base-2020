@@ -5,26 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.constants;
+package frc.robot.utility.math;
+
+import frc.robot.constants.DriveConstants;
 
 /**
  * Add your docs here.
  */
-public class VisionConstants {
-    /**
-     * Horizontal and Vertical Proportional terms
-     */
-    public static final double VISION_KP_HORIZONTAL = 0.04f;
-    public static final double VISION_KP_VERTICAL = 0.04f;
+public class NomadUnits {
 
-    /**
-     * the time per increment in seconds
-     */
-    public static final double VISION_RAMP_TIME = 0.25;
+    public static double DBTicksToMeters (double ticks, DriveConstants constants) {
+        return Math.PI * constants.getkWheelDiameter() * ticks / constants.getEncoderCountsPerWheelRevolution();
+    }
 
-    /**
-     * Vision Pipeline Preset, should be in this state at all times
-     */
-    public static final double VISION_PIPELINE = 1;
-
+    public static double DBMetersToTicks (double meters, DriveConstants constants) {
+        return (meters / (constants.getkWheelDiameter() * Math.PI) * constants.getEncoderCountsPerWheelRevolution()); 
+    }
 }

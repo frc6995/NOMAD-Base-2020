@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivebase;
+package frc.robot.commands.Drivebase;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class BasicAutoCG extends SequentialCommandGroup {
-  /**
+  /**`
    * Creates a new BasicAutoCG. Placeholder autonomous command 
    */
   public BasicAutoCG() {
