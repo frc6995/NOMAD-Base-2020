@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * Add your docs here.
+ * Limelight unit test
  */
 public class LimelightUnitTest {
 
@@ -20,6 +20,8 @@ public class LimelightUnitTest {
     public void testConstructors(){
         
         Limelight tester = new Limelight("name");
+
+        assertEquals("X offset test", 0, tester.getXOffset(), 0.001);
         
     }
 }
