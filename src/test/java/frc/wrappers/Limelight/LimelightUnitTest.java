@@ -30,7 +30,7 @@ public class LimelightUnitTest {
     public void offsetTest(){
         Limelight tester = new Limelight("name");        
 
-        assertEquals("X offset test", 2, tester.getXOffset(), 0.1);
+        assertEquals("X offset test", 0, tester.getXOffset(), 0.1);
     }
 
     @Test
