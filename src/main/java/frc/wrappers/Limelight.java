@@ -30,8 +30,6 @@ public class Limelight implements Sendable {
 
         private final int value;
 
-        int what;xx
-
         LedState(final int newValue)
         {
             value = newValue;
