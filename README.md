@@ -1,3 +1,4 @@
+![CI](https://github.com/frc6995/NOMAD-Base-2020/workflows/CI/badge.svg)
 # NOMAD-Base-2020
 
 This is an attempt to create a basic command-based FRC robot program that is expandable and customizable for the FRC Team 6995, NOMAD.
