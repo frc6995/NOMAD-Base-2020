@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-import frc.wrappers.Limelight;
+package frc.wrappers.Limelight;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,8 +18,8 @@ public class LimelightUnitTest {
 
     @Test
     public void testConstructors(){
-        Limelight tester = new Limelight();
-
-        Limelight tester2 = new Limelight("name", false);
+        
+        Limelight tester = new Limelight("name");
+        
     }
 }
