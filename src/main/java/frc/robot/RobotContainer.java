@@ -7,22 +7,18 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.robot.constants.DriveConstants;
-import frc.robot.constants.Trajectories;
-import frc.robot.constants.DriveConstants.CONTROLLER_TYPE;
-import frc.robot.commands.drivebase.BasicAutoCG;
-import frc.robot.commands.auto.NomadPathFollowerCommandBuilder;
-import frc.robot.commands.drivebase.DrivebaseVisionC;
-import frc.robot.subsystems.DrivebaseS;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.robot.constants.AutoConstants;
+import frc.robot.constants.AutoConstantsKRen;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.DriveConstantsKRen;
+import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
+import frc.robot.subsystems.DrivebaseS;
+import frc.robot.wrappers.InputDevices.NomadDriverController;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,55 +27,77 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  
-
-  public static final DrivebaseS drivebaseS = new DrivebaseS();
-  private final BasicAutoCG basicAutoCG = new BasicAutoCG();
-  private final SequentialCommandGroup sCurveRightAutoCG 
-    = new NomadPathFollowerCommandBuilder(Trajectories.sCurveRight, drivebaseS).buildPathFollowerCommandGroup();
-    private final SequentialCommandGroup straight2mAutoCG 
-    = new NomadPathFollowerCommandBuilder(Trajectories.straight2m, drivebaseS).buildPathFollowerCommandGroup();  
-  public final GenericHID driveController;
-  private final Command driveStickC;
-  private DoubleSupplier fwdBackAxis;
-  private final DrivebaseVisionC visionAlignC; 
-
+  //Constants Files
+  private AutoConstants autoConstants;
+  private DriveConstants driveConstants;
+  //Subsystems
+  private DrivebaseS drivebaseS;
+  //Commands
+  private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
+  //Controller Profiles
+  private OGXboxControllerTriggerDriveProfile ogXboxControllerTriggerDriveProfile;
+  //Controllers
+  private NomadDriverController driverController;
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
   public RobotContainer() {
-    //Initializes driveController as either a Joystick or Xbox depending on DriveConstants.DRIVE_CONTROLLER_TYPE.
-    if (DriveConstants.DRIVE_CONTROLLER_TYPE == CONTROLLER_TYPE.Joystick) {
-      driveController = new Joystick(DriveConstants.OI_DRIVE_CONTROLLER);
-    }
-    else {
-      driveController = new XboxController(DriveConstants.OI_DRIVE_CONTROLLER);
-    }
-    fwdBackAxis = () -> -driveController.getRawAxis(DriveConstants.AXIS_DRIVE_FWD_BACK);
-    //Initializes the driveStickC command inline. Simply passes the drive controller axes into the drivebaseS arcadeDrive.
-    driveStickC = new RunCommand(() -> drivebaseS.arcadeDrive(fwdBackAxis.getAsDouble(), driveController.getRawAxis(DriveConstants.AXIS_DRIVE_TURN)), drivebaseS);
-    visionAlignC = new DrivebaseVisionC(drivebaseS);
-    //Turn off LiveWindow telemetry. We don't use it and it takes 90% of the loop time.
-    LiveWindow.disableAllTelemetry();
-    // Configure the button bindings
+    createConstantsFiles();
+    createSubsystems();
+    createCommands();
+    configureDefaultCommands();
+    createControllerProfiles();
+    createControllers();
     configureButtonBindings();
-
-    drivebaseS.setDefaultCommand(driveStickC);
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Creates the constants files for each subsystem.
    */
-  private void configureButtonBindings() {
-    new JoystickButton(driveController, 4).whileHeld(visionAlignC);
-    
+  private void createConstantsFiles() {
+    driveConstants = new DriveConstantsKRen();
+    autoConstants = new AutoConstantsKRen(driveConstants);
+  }
+  /**
+   * Creates the subsystem.
+   */
+  private void createSubsystems() {
+    drivebaseS = new DrivebaseS(driveConstants, autoConstants);
+  }
+  /**
+   * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
+   */
+  private void createCommands() {
+    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
+  }
+  /**
+   * Configures the default Commands for the subsystems.
+   */
+  private void configureDefaultCommands() {
+    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+  }
+  /**
+   * Instantiates the various controller profiles for optional use.
+   */
+  private void createControllerProfiles() {
+    ogXboxControllerTriggerDriveProfile = new OGXboxControllerTriggerDriveProfile();
+  }
+  /**
+   * Creates the user controllers.
+   */
+  private void createControllers() {
+    driverController = new NomadDriverController(ogXboxControllerTriggerDriveProfile);
   }
 
-  
+  /**
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -87,6 +105,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return sCurveRightAutoCG;
+    return new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
   }
+
 }
