@@ -43,6 +43,27 @@ public class Limelight implements Sendable {
         {
              return value;
         }    
+
+        public static LedState getState(int value){
+            LedState state = null;
+
+            switch (value){
+                case 0:
+                    state = Preset;
+                    break;
+                case 1:
+                    state = Off;
+                    break;
+                case 2:
+                    state = Blink;
+                    break;
+                case 3:
+                    state = On;
+                    break;
+            }
+
+            return state;
+        }
     }
 
     /**
@@ -218,6 +239,12 @@ public class Limelight implements Sendable {
     public void setLedMode(LedState state) {
         // Set the state without a switch
         set("ledMode", state.getValue());
+    }
+
+    public LedState getLEDMode(){
+        int state = (int)get("ledMode");
+
+        return LedState.getState(state);
     }
 
     /**

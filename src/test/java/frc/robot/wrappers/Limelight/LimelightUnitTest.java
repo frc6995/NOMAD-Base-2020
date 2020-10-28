@@ -10,7 +10,6 @@ package frc.robot.wrappers.Limelight;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Limelight unit test
@@ -35,7 +34,11 @@ public class LimelightUnitTest {
     }
 
     @Test
-    public void compareEnums(){
-        assertEquals("Enum test", Limelight.LedState.Blink, Limelight.LedState.Blink);
+    public void testLEDModes(){
+        Limelight tester = new Limelight("name");
+
+        tester.setLedMode(Limelight.LedState.Blink);
+
+        assertEquals("Enum test", Limelight.LedState.Blink, tester.getLEDMode());
     }
 }
