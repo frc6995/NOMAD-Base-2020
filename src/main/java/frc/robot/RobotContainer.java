@@ -49,10 +49,10 @@ public class RobotContainer {
   public RobotContainer() {
     createConstantsFiles();
     createSubsystems();
-    createCommands();
-    configureDefaultCommands();
     createControllerProfiles();
     createControllers();
+    createCommands();
+    configureDefaultCommands();
     configureButtonBindings();
   }
 
