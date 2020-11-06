@@ -23,7 +23,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
-import frc.robot.wrappers.MotorControllers.NomadTalonSRX;
+import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 
 /**
  * Add your docs here.

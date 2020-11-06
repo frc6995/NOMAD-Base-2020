@@ -8,13 +8,12 @@
 package frc.robot.controllerprofiles;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.robot.utility.inputs.DriverControllerProfile;
+import frc.robot.utility.inputs.DrivebaseControllerProfile;
 
 /**
  * An example driver controller profile that shows 
  */
-public class XboxControllerTriggerDriveProfile extends DriverControllerProfile {
-    private int usbPort = 0;
+public class XboxControllerTriggerDriveProfile extends DrivebaseControllerProfile {
     private int fwdBackAxis = 1; //TODO update with actual mappings
     private int leftRightAxis = 0;
     private int leftTriggerAxis = 4;
@@ -22,11 +21,6 @@ public class XboxControllerTriggerDriveProfile extends DriverControllerProfile {
     @Override
     public double getFwdBackAxisValue(GenericHID controller){
         return controller.getRawAxis(leftTriggerAxis) - controller.getRawAxis(rightTriggerAxis);
-    }
-
-    @Override
-    public int getUsbPort() {
-        return usbPort;
     }
 
     @Override

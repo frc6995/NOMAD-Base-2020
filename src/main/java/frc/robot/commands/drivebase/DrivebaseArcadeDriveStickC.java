@@ -9,7 +9,7 @@ package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.wrappers.InputDevices.NomadDriverController;
+import frc.robot.wrappers.inputdevices.NomadDriverController;
 
 public class DrivebaseArcadeDriveStickC extends CommandBase {
   DrivebaseS drivebaseS;
