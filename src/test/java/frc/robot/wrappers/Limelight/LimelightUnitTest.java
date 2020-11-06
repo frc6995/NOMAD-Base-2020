@@ -20,7 +20,7 @@ public class LimelightUnitTest {
     @Test
     public void targetTest(){
         
-        Limelight tester = new Limelight("name");
+        Limelight tester = new Limelight("tester");
 
         tester.setLedMode(Limelight.LedState.Blink);
 
