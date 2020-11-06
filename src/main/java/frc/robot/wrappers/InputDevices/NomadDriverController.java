@@ -5,11 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.wrappers.InputDevices;
+package frc.robot.wrappers.inputdevices;
 
 import edu.wpi.first.wpilibj.GenericHID;
-
-import frc.robot.utility.inputs.DriverControllerProfile;
+import frc.robot.utility.inputs.ControllerProfile;
+import frc.robot.utility.inputs.DrivebaseControllerProfile;
 
 /**
  * A controller wrapper specifically for the driver controller.
@@ -19,15 +19,17 @@ public class NomadDriverController extends GenericHID {
     /**
      * The DriverControllerProfile for the driver controller in use.
      */
-    DriverControllerProfile controllerProfile;
+    ControllerProfile controllerProfile;
+    DrivebaseControllerProfile drivebaseProfile;
 
     /**
      * Creates a new GenericHID on the specified profile's USB port.
      * @param profile the DriverControllerProfile for the driver controller in use.
      */
-    public NomadDriverController(DriverControllerProfile profile){
-        super(profile.getUsbPort());
-        controllerProfile = profile;
+    public NomadDriverController(ControllerProfile controllerProfile, DrivebaseControllerProfile drivebaseProfile){
+        super(controllerProfile.getUsbPort());
+        controllerProfile = this.controllerProfile;
+        drivebaseProfile = this.drivebaseProfile;
 
     }
 
@@ -36,7 +38,7 @@ public class NomadDriverController extends GenericHID {
      * @return the result of the controller profile's customFwdBackAxis method.
      */
     public double getFwdBackAxisValue(){
-        return controllerProfile.getFwdBackAxisValue(this);
+        return drivebaseProfile.getFwdBackAxisValue(this);
     }
 
     /**
@@ -44,7 +46,7 @@ public class NomadDriverController extends GenericHID {
      * @return the result of the controller profile's customLeftRightAxis method.
      */
     public double getLeftRightAxisValue(){
-        return controllerProfile.getLeftRightAxisValue(this);
+        return drivebaseProfile.getLeftRightAxisValue(this);
     }
 
     /**

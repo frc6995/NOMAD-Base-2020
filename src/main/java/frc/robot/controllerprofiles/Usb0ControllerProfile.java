@@ -5,23 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.utility.inputs;
+package frc.robot.controllerprofiles;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.utility.inputs.ControllerProfile;
 
 /**
  * Add your docs here.
  */
-public abstract class DriverControllerProfile {
-    public abstract int getUsbPort();
-    public abstract int getFwdBackAxisID();
-    public abstract int getLeftRightAxisID();
+public class Usb0ControllerProfile extends ControllerProfile {
 
-    //Custom behaviors.
-    public double getFwdBackAxisValue(GenericHID controller){
-        return controller.getRawAxis(getFwdBackAxisID());
-    }
-    public double getLeftRightAxisValue(GenericHID controller){
-        return controller.getRawAxis(getLeftRightAxisID());
+	@Override
+	public int getUsbPort() {
+		// TODO Auto-generated method stub
+        return 0;
     }
 }

@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.wrappers.MotorControllers.NomadTalonSRX;
+import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;

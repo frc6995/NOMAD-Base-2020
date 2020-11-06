@@ -1,4 +1,4 @@
-package frc.robot.wrappers.MotorControllers;
+package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;;

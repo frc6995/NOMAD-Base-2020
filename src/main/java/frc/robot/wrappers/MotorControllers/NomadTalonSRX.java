@@ -1,4 +1,4 @@
-package frc.robot.wrappers.MotorControllers;
+package frc.robot.wrappers.motorcontrollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
