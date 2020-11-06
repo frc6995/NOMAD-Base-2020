@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AgitatorS;
 import frc.robot.wrappers.InputDevices.NomadDriverController;
 
+/**
+ * @author JoeyFabel
+ */
 public class AgitatorSpinC extends CommandBase {
   AgitatorS agitator;
   NomadDriverController controller;
