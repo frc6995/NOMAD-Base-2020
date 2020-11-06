@@ -18,7 +18,9 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.wrappers.InputDevices.NomadDriverController;
+import frc.robot.wrappers.inputdevices.NomadDriverController;
+import frc.robot.wrappers.limelight.Limelight;
+import frc.robot.wrappers.limelight.LimelightSim;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,6 +34,7 @@ public class RobotContainer {
   private DriveConstants driveConstants;
   //Subsystems
   private DrivebaseS drivebaseS;
+  private Limelight limelight = new Limelight("Testing Limelight");
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
   //Controller Profiles

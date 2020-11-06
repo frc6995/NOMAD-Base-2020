@@ -1,14 +1,21 @@
-package frc.robot.wrappers.Limelight;
+package frc.robot.wrappers.limelight;
 
 import java.util.Map;
 
+import edu.wpi.first.hal.SimBoolean;
+import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.SimEnum;
+import edu.wpi.first.hal.SimValue;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 
 /**
  * This class represents a limelight.
@@ -22,7 +29,7 @@ public class Limelight implements Sendable {
     /**
      * The possible states of the limelight LEDs.
      */
-    public enum LedState {        
+    public enum LedState {
         On(3),
         Off(1),
         Blink(2),
@@ -80,13 +87,17 @@ public class Limelight implements Sendable {
     private boolean isReal = true;
 
     private ShuffleboardTab tab = null;
-    private NetworkTableEntry hasTargetSim = null;
-    private NetworkTableEntry simTx = null;
-    private NetworkTableEntry simTy = null;
-    private NetworkTableEntry simTs = null;
-    private NetworkTableEntry simPipeline = null;
-    private NetworkTableEntry simCamMode = null;
-    private NetworkTableEntry simLedMode = null;
+    private LimelightSimulatedNetworkTable table = null;
+    private SimDevice  GUIlimelightSim = null;
+    private SimBoolean GUIhasTargetSim = null;
+    private SimDouble  GUIsimTx = null;
+    private SimDouble  GUIsimTy = null;
+    private SimDouble  GUIsimTs = null;
+    private SimValue   GUIsimPipeline = null;
+    private SimEnum    GUIsimCamMode = null;
+    private SimEnum    GUIsimLedMode = null;
+    private SimBoolean GUIsim3dMode = null;
+    private SimValue   GUIsimCamTran = null;
 
     /**
      * A class representing a limelight.
@@ -95,6 +106,10 @@ public class Limelight implements Sendable {
      */
     public Limelight(String name) {
         tableName = name;
+        table = new LimelightSimulatedNetworkTable(name);
+        GUIlimelightSim = SimDevice.create(name);
+        SendableRegistry.addLW(this, name);
+        formatShuffleboard();
     }
 
     /**
@@ -113,26 +128,9 @@ public class Limelight implements Sendable {
         this.isReal = isReal; 
 
         if (!isReal) {
-            tab = Shuffleboard.getTab(name.concat("Sim"));
-
-            hasTargetSim = tab.add("Has Taget", false)
-                    .withWidget(BuiltInWidgets.kToggleSwitch)
-                    .getEntry();
-
-            simTx = tab.add("tx", 0.0)
-                    .withWidget(BuiltInWidgets.kNumberSlider)
-                    .withProperties(Map.of("min", -29.8, "max", 29.8))
-                    .getEntry();
             
-            simTy = tab.add("ty", 0.0)
-                    .withWidget(BuiltInWidgets.kNumberSlider)
-                    .withProperties(Map.of("min", -24.85, "max", 24.85))
-                    .getEntry();
+
             
-            simTs = tab.add("ts", 0.0)
-                    .withWidget(BuiltInWidgets.kNumberSlider)
-                    .withProperties(Map.of("min", -90, "max", 0))
-                    .getEntry();
         }
     }
 
@@ -143,11 +141,7 @@ public class Limelight implements Sendable {
      * @return True if the limelight sees a target.
      */
     public boolean hasTarget() {        
-        if (isReal) {
             return get("tv") == 1; // cleaned return statement up
-        } else {
-            return hasTargetSim.getBoolean(false);
-        }
     }
 
     /**
@@ -157,11 +151,7 @@ public class Limelight implements Sendable {
      * @return The horizontal offset in degrees.
      */
     public double getXOffset() {
-        if (isReal) {
-            return get("tx");
-        } else {
-            return simTx.getDouble(0.0);
-        }
+        return get("tx");
     }
 
     /**
@@ -171,11 +161,7 @@ public class Limelight implements Sendable {
      * @return The vertical offset in degrees.
      */
     public double getYOffset() {
-        if (isReal) {
             return get("ty");
-        } else {
-            return simTy.getDouble(0.0);
-        }
     }
 
     /**
@@ -185,11 +171,7 @@ public class Limelight implements Sendable {
      * @return The skew in degrees.
      */
     public double getSkew() {
-        if (isReal) {
             return get("ts");
-        } else {
-            return simTs.getDouble(0.0);
-        }
     }
 
     /**
@@ -254,14 +236,34 @@ public class Limelight implements Sendable {
     private String getTableName() {
         return tableName;
     }
-
+    @Override
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Limelight");
-        builder.addDoubleProperty("Horizontal Offset", this::getXOffset, null); 
+        builder.addDoubleProperty("Horizontal Offset", this::getXOffset, a -> this.set("tx", a)); 
         builder.addDoubleProperty("Vertical Offset", this::getYOffset, null);
         builder.addDoubleProperty("Skew", this::getSkew, null);
         builder.addDoubleProperty("Pipeline", this::getPipeline, this::setPipeline);
         builder.addStringProperty("Table Name", this::getTableName, null);
+    }
+
+    public void formatShuffleboard(){
+        tab = Shuffleboard.getTab(tableName.concat("Sim"));
+        tab.add(this);
+        /*tab.add("Has Target", table.hasTarget)
+                    .withWidget(BuiltInWidgets.kToggleSwitch).;
+
+        tab.add("tx", table.tx)
+                    .withWidget(BuiltInWidgets.kNumberSlider)
+                    .withProperties(Map.of("min", -29.8, "max", 29.8));
+            
+        tab.add("ty", table.ty)
+                    .withWidget(BuiltInWidgets.kNumberSlider)
+                    .withProperties(Map.of("min", -24.85, "max", 24.85));
+            
+        tab.add("ts", table.ts)
+                    .withWidget(BuiltInWidgets.kNumberSlider)
+                    .withProperties(Map.of("min", -90, "max", 0));
+        */
     }
 
     /**
