@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.wrappers.InputDevices;
+package frc.robot.wrappers.inputdevices;
 
 import edu.wpi.first.wpilibj.GenericHID;
 

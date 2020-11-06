@@ -1,4 +1,4 @@
-package frc.robot.wrappers.MotorControllers;
+package frc.robot.wrappers.motorcontrollers;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
