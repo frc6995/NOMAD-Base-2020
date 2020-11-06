@@ -18,8 +18,9 @@ public class AgitatorS extends SubsystemBase {
    * Creates a new Agitator.
    */
   public AgitatorS() {
-    leftMotor = new NomadSparkMax(31);
-    rightMotor = new NomadSparkMax(32);
+    leftMotor = new NomadSparkMax(33); // 31
+    rightMotor = new NomadSparkMax(30); // 32
+    
   }
 
   @Override
@@ -27,18 +28,32 @@ public class AgitatorS extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  /**
+   * Sets the speed of the left motor to the given value
+   * @param motorSpeed the speed of the motor
+   */
   public void setLeftMotor(double motorSpeed){
     leftMotor.set(motorSpeed);
   }
 
+  /**
+   * Sets the speed of the right motor to the given value
+   * @param motorSpeed the speed of the motor
+   */
   public void setRightMotor(double motorSpeed){
     rightMotor.set(motorSpeed);
     }
 
+    /**
+     * Stops the left motor
+     */
     public void stopLeftMotor(){
       leftMotor.stopMotor();
     }
 
+    /**
+     * Stops the right motor
+     */
     public void stopRightMotor(){
       rightMotor.stopMotor();
     }
