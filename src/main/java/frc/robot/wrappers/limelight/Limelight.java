@@ -1,4 +1,4 @@
-package frc.robot.wrappers.Limelight;
+package frc.robot.wrappers.limelight;
 
 import java.util.Map;
 
@@ -43,6 +43,30 @@ public class Limelight implements Sendable {
         {
              return value;
         }    
+
+        public static LedState getState(int value){
+            LedState state = null;
+
+            switch (value){
+                case 0:
+                    state = Preset;
+                    break;
+                case 1:
+                    state = Off;
+                    break;
+                case 2:
+                    state = Blink;
+                    break;
+                case 3:
+                    state = On;
+                    break;
+                default:
+                    state = null;
+                    break;
+            }
+
+            return state;
+        }
     }
 
     /**
@@ -217,7 +241,13 @@ public class Limelight implements Sendable {
      */
     public void setLedMode(LedState state) {
         // Set the state without a switch
-        set("ledMode", state.getValue());
+        set("ledMode", state != null ? state.getValue() : LedState.Off.getValue());
+    }
+
+    public LedState getLEDMode(){
+        int state = (int)get("ledMode");
+
+        return LedState.getState(state);
     }
 
     /**
@@ -239,16 +269,16 @@ public class Limelight implements Sendable {
     }
 
     private double get(String varName) {
-        return NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName).getDouble(0);
+        return NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName).getDouble(0);
     }
 
     private double[] getArray(String varName) {
-        return NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName)
+        return NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName)
                 .getDoubleArray(new double[0]);
     }
 
     private void set(String varName, double value) {
-        NetworkTableInstance.getDefault().getTable(this.tableName).getEntry(varName).setNumber(value);
+        NetworkTableInstance.getDefault().getTable(tableName).getEntry(varName).setNumber(value);
     }
 
     private String getTableName() {

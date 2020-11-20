@@ -8,13 +8,13 @@
 package frc.robot.controllerprofiles;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.robot.utility.inputs.DriverControllerProfile;
+import frc.robot.utility.inputs.DrivebaseControllerProfile;
 import frc.robot.utility.math.NomadMathUtil;
 
 /**
  * An example driver controller profile that shows 
  */
-public class OGXboxControllerTriggerDriveProfile extends DriverControllerProfile {
+public class OGXboxControllerTriggerDriveProfile extends DrivebaseControllerProfile {
     private final int usbPort = 0;
     private final int fwdBackAxis = 1;
     private final int leftRightAxis = 0;
@@ -24,11 +24,6 @@ public class OGXboxControllerTriggerDriveProfile extends DriverControllerProfile
     public double getFwdBackAxisValue(GenericHID controller){
         return NomadMathUtil.lerp(controller.getRawAxis(leftTriggerAxis), -1.0, 1.0, 0.0, 1.0) 
              - NomadMathUtil.lerp(controller.getRawAxis(rightTriggerAxis), -1.0, 1.0, 0.0, 1.0);
-    }
-
-    @Override
-    public int getUsbPort() {
-        return usbPort;
     }
 
     @Override

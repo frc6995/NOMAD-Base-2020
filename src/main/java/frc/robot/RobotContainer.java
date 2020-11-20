@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.sql.DriverAction;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -19,8 +21,10 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
 import frc.robot.subsystems.AgitatorS;
+import frc.robot.controllerprofiles.Usb0ControllerProfile;
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.wrappers.InputDevices.NomadDriverController;
+import frc.robot.utility.inputs.ControllerProfile;
+import frc.robot.wrappers.inputdevices.NomadDriverController;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -38,6 +42,7 @@ public class RobotContainer {
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
   private AgitatorSpinC agitatorSpinC;
+  private Usb0ControllerProfile driverControllerProfile;
   //Controller Profiles
   private OGXboxControllerTriggerDriveProfile ogXboxControllerTriggerDriveProfile;
   //Controllers
@@ -93,7 +98,7 @@ public class RobotContainer {
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadDriverController(ogXboxControllerTriggerDriveProfile);
+    driverController = new NomadDriverController(driverControllerProfile, ogXboxControllerTriggerDriveProfile);
   }
 
   /**
