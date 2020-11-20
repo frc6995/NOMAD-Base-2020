@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import frc.robot.wrappers.Limelight.Limelight.LedState;
+import frc.robot.wrappers.limelight.Limelight.LedState;
 
 /**
  * Limelight unit test
