@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.wrappers.MotorControllers.NomadSparkMax;
+import frc.robot.wrappers.motorcontrollers.NomadSparkMax;
 
 public class AgitatorS extends SubsystemBase {
   private NomadSparkMax leftMotor;

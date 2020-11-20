@@ -2,7 +2,7 @@ package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AgitatorS;
-import frc.robot.wrappers.InputDevices.NomadDriverController;
+import frc.robot.wrappers.inputdevices.NomadDriverController;
 
 /**
  * @author JoeyFabel
