@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.wrappers.Limelight;
+package frc.robot.wrappers.limelight;
 
 import static org.junit.Assert.assertEquals;
 

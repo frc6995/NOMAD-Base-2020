@@ -1,4 +1,4 @@
-package frc.robot.wrappers.Limelight;
+package frc.robot.wrappers.limelight;
 
 import java.util.Map;
 
