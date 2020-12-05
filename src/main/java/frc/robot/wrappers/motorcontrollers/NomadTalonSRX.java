@@ -27,7 +27,7 @@ public class NomadTalonSRX extends NomadMotor {
         super(new WPI_TalonSRX(port));
         configFactoryDefault();
         setNeutralMode(NeutralMode.Brake);
-        getTalonSRX().setSafetyEnabled(false);
+        setSafetyEnabled(false);
     }
 
     /**

@@ -72,6 +72,17 @@ public class NomadMotor {
         }
     }
 
+    public void setSafetyEnabled(boolean enabled){
+        if (talon != null){
+            talon.setSafetyEnabled(enabled);
+        }
+        else if (victor != null){
+            victor.setSafetyEnabled(enabled);
+        }
+    }
+
+    
+
     protected WPI_TalonSRX getTalonSRX() {
         return talon;
     }
