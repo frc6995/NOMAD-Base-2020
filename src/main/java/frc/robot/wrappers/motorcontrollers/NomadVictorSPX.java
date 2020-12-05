@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
  * This class is an encapsulation of WPI_VictorSPX that add a couple
  * constructors for forcing common settings.
  */
-public class NomadVictorSPX extends WPI_VictorSPX {
+public class NomadVictorSPX<LeaderType extends NomadBaseMotor> extends WPI_VictorSPX implements NomadBaseMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -47,7 +47,7 @@ public class NomadVictorSPX extends WPI_VictorSPX {
      * @param inverted True for inverted, false if not.
      * @param master   The NomadTalonSRX to follow.
      */
-    public NomadVictorSPX(int port, boolean inverted, NomadTalonSRX master) {
+    public NomadVictorSPX(int port, boolean inverted, NomadTalonSRX<NomadNoneMotor> master) {
         this(port, inverted);
         follow(master);
     }
@@ -60,7 +60,7 @@ public class NomadVictorSPX extends WPI_VictorSPX {
      * @param inverted True for inverted, false if not.
      * @param master   The NomadVictorSPX to follow.
      */
-    public NomadVictorSPX(int port, boolean inverted, NomadVictorSPX master) {
+    public NomadVictorSPX(int port, boolean inverted, NomadVictorSPX<NomadNoneMotor> master) {
         this(port, inverted);
         follow(master);
     }
@@ -113,5 +113,19 @@ public class NomadVictorSPX extends WPI_VictorSPX {
         } else {
             super.set(mode, value);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setLeader( NomadBaseMotor leader){
+        if (leader instanceof NomadTalonSRX) {
+            follow((NomadTalonSRX<NomadNoneMotor>) leader);
+        }
+        else if (leader instanceof NomadVictorSPX) {
+            follow((NomadVictorSPX<NomadNoneMotor>) leader);
+        }
+        else if (leader instanceof NomadNoneMotor) {
+            System.out.println("NomadVictorSPX tried to follow NomadNoneMotor, skipping...");
+        }
+        else throw new IllegalArgumentException("NomadVictorSPX can only follow a NomadTalonSRX or NomadVictorSPX!");
     }
 }

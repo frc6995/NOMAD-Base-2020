@@ -7,53 +7,57 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
+import frc.robot.wrappers.motorcontrollers.NomadBaseMotor;
 
-public class DrivebaseS extends SubsystemBase {
-  public NomadTalonSRX leftTalon;
-  public NomadTalonSRX rightTalon;
-  private DriveConstants driveConstants;
-  private AutoConstants autoConstants;
+public abstract class DrivebaseS<LeaderType extends NomadBaseMotor, FollowerType extends NomadBaseMotor> extends SubsystemBase {
+  DifferentialDriveOdometry differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
 
   /**
    * Creates a new DrivebaseS.
    */
-  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
-    this.driveConstants = driveConstants; // TODO is this right?
-    this.autoConstants = autoConstants;
-    leftTalon = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
-    rightTalon = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
+  public DrivebaseS(final DriveConstants driveConstants, final AutoConstants autoConstants) {
+    
   }
+  /**
+   * 
+   * @param driveConstants
+   * @param leftLeader
+   * @param rightLeader
+   * @param leftFollower
+   * @param rightFollower
+   */
+  public abstract void instantiateConfigureMotors(DriveConstants driveConstants, LeaderType leftLeader, LeaderType rightLeader, FollowerType leftFollower, FollowerType rightFollower);
 
-  public DrivebaseS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX){
-    leftTalon = leftTalonSRX;
-    rightTalon = rightTalonSRX;
-  }
+  public abstract double getYaw();
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run    
   }
+  
+  public Pose2d getPose(){
+    return differentialDriveOdometry.getPoseMeters();
+  }
 
+  public abstract DifferentialDriveWheelSpeeds getWheelSpeeds();
+
+  public abstract double getLeftVelocity();
+
+  public abstract double getRightVelocity();
   /**
    * Basic arcade drive. Converts joystick inputs into percent outputs for each side of the drivebase.
    * @param fwdBack The joystick input for the forward/back axis. It is assumed that a value of 1 represents forward, and -1 represents backward.
    * @param leftRight The joystick input for the left/right axis. It is assumed that 1 represents left point turn, and -1 represents right point turn.
    */
-  public DrivebaseWheelPercentages arcadeDriveController(double fwdBack, double leftRight) {
-    double leftPercent = fwdBack + leftRight; 
-    double rightPercent = fwdBack - leftRight;
-    return new DrivebaseWheelPercentages().setLeftPercentage(leftPercent).setRightPercentage(rightPercent);
-  }
+  public abstract DrivebaseWheelPercentages arcadeDriveController(double fwdBack, double leftRight);
 
-  public void drivePercentages(DrivebaseWheelPercentages percentages){
-    leftTalon.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
-    rightTalon.set(ControlMode.PercentOutput, percentages.getRightPercentage());
-  }
+  public abstract void drivePercentages(DrivebaseWheelPercentages percentages);
 }

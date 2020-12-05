@@ -17,31 +17,51 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import frc.robot.constants.AutoConstantsDefault;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.DriveConstantsDefault;
+import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
+import frc.robot.wrappers.motorcontrollers.NomadNoneMotor;
 import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 
 /**
  * Add your docs here.
  */
-public class DrivebaseSTest {
-    NomadTalonSRX leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
-    NomadTalonSRX rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
+public class DrivebaseTalonVictorSTest {
+    @SuppressWarnings("unchecked")
+    @Mock
+    NomadTalonSRX<NomadNoneMotor> leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
+    @SuppressWarnings("unchecked")
+    @Mock
+    NomadTalonSRX<NomadNoneMotor> rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
     
     
-    DrivebaseS drivebaseSTest;
+    DrivebaseTalonVictorS drivebaseSTest;
+    DriveConstantsDefault testDriveConstants = new DriveConstantsDefault(){
+        @Override
+        public boolean getGyroReversed() {
+            return false;
+        }
+    };
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
     @Before
     public void setup(){
-        drivebaseSTest = new DrivebaseS(leftTalonSRX, rightTalonSRX);
         MockitoAnnotations.initMocks(this);
+        drivebaseSTest = new DrivebaseTalonVictorS(leftTalonSRX, 
+        rightTalonSRX, 
+        testDriveConstants, new AutoConstantsDefault(testDriveConstants));
+        
     }
     @Test
     public void arcadeDriveControllerInsideRangeTest(){
@@ -57,9 +77,9 @@ public class DrivebaseSTest {
 
     @Test
     public void drivePercentageTest(){
+        drivebaseSTest = new DrivebaseTalonVictorS(leftTalonSRX, rightTalonSRX, testDriveConstants, new AutoConstantsDefault(testDriveConstants));
         DrivebaseWheelPercentages testWheelPercentages = new DrivebaseWheelPercentages();
         testWheelPercentages.setLeftPercentage(0.69).setRightPercentage(0.95);
-        reset(leftTalonSRX, rightTalonSRX);
         //doNothing().when(leftTalonSRX).set(Mockito.eq(ControlMode.PercentOutput), anyDouble());
         //doNothing().when(rightTalonSRX).set(Mockito.eq(ControlMode.PercentOutput), anyDouble());
         drivebaseSTest.drivePercentages(testWheelPercentages);

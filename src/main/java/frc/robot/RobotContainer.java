@@ -23,6 +23,7 @@ import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
 import frc.robot.subsystems.AgitatorS;
 import frc.robot.controllerprofiles.Usb0ControllerProfile;
 import frc.robot.subsystems.DrivebaseS;
+import frc.robot.subsystems.DrivebaseTalonVictorS;
 import frc.robot.utility.inputs.ControllerProfile;
 import frc.robot.wrappers.inputdevices.NomadDriverController;
 
@@ -71,7 +72,7 @@ public class RobotContainer {
    * Creates the subsystem.
    */
   private void createSubsystems() {
-    drivebaseS = new DrivebaseS(driveConstants, autoConstants);
+    drivebaseS = new DrivebaseTalonVictorS(driveConstants, autoConstants);
     agitatorS = new AgitatorS();
   }
   /**

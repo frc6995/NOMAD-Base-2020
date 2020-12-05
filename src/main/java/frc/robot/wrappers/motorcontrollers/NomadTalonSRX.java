@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  * for forcing common settings. It takes inspiration for the lazy feature from
  * FRC 254.
  */
-public class NomadTalonSRX extends WPI_TalonSRX {
+public class NomadTalonSRX<LeaderType extends NomadBaseMotor> extends WPI_TalonSRX implements NomadBaseMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -48,7 +48,7 @@ public class NomadTalonSRX extends WPI_TalonSRX {
      * @param inverted True for inverted, false if not.
      * @param master   The NomadTalonSRX to follow.
      */
-    public NomadTalonSRX(int port, boolean inverted, NomadTalonSRX master) {
+    public NomadTalonSRX(int port, boolean inverted, NomadTalonSRX<NomadNoneMotor> master) {
         this(port, inverted);
         follow(master);
     }
@@ -61,29 +61,10 @@ public class NomadTalonSRX extends WPI_TalonSRX {
      * @param inverted True for inverted, false if not.
      * @param master   The NomadVictorSPX to follow.
      */
-    public NomadTalonSRX(int port, boolean inverted, NomadVictorSPX master) {
+    public NomadTalonSRX(int port, boolean inverted, NomadVictorSPX<NomadNoneMotor> master) {
         this(port, inverted);
         follow(master);
     }
-
-    /**
-     * Check if the motor controller is lazy
-     * 
-     * @return Whether the motor controller is lazy
-     */
-    public boolean isLazy() {
-        return lazy;
-    }
-
-    /**
-     * Set the lazy mode
-     * 
-     * @param isLazy A boolean for the lazy mode, where true is lazy on
-     */
-    public void setLazy(boolean isLazy) {
-        lazy = isLazy;
-    }
-
     /**
      * Sets the appropriate output on the talon, depending on the mode. If in lazy
      * mode, it will not call set unless the value or mode is different.
@@ -114,6 +95,33 @@ public class NomadTalonSRX extends WPI_TalonSRX {
         } else {
             super.set(mode, value);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setLeader( NomadBaseMotor leader){
+        if (leader instanceof NomadTalonSRX) {
+            follow((NomadTalonSRX<NomadNoneMotor>) leader);
+        }
+        else if (leader instanceof NomadVictorSPX) {
+            follow((NomadVictorSPX<NomadNoneMotor>) leader);
+        }
+        else if (leader instanceof NomadNoneMotor) {
+            System.out.println("NomadTalonSRX tried to follow NomadNoneMotor, skipping...");
+        }
+        else throw new IllegalArgumentException("NomadTalonSRX can only follow a NomadTalonSRX or NomadVictorSPX!");
+    }
+
+    @Override
+    public boolean isLazy() {
+        // TODO Auto-generated method stub
+        return lazy;
+    }
+
+    @Override
+    public void setLazy(boolean isLazy) {
+        lazy = isLazy;
+        // TODO Auto-generated method stub
+
     }
 
 }
