@@ -10,11 +10,10 @@ package frc.robot.wrappers.motorcontrollers;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 /**
  * Add your docs here.
@@ -23,6 +22,11 @@ public class NomadMotor {
     private WPI_TalonSRX talon = null;
     private WPI_VictorSPX victor = null;
     private CANSparkMax sparkMax = null;
+
+    protected boolean lazy = false;
+
+    protected double lastPower = Double.NaN;
+    protected ControlMode lastMode = null;
     
     public NomadMotor(WPI_TalonSRX talonSRX){
         talon = talonSRX;
@@ -118,6 +122,24 @@ public class NomadMotor {
         else if (victor != null){
             victor.follow(master.getVictorSPX(), followerType);
         }
+    }
+
+    /**
+     * Check if the motor controller is lazy
+     * 
+     * @return Whether the motor controller is lazy
+     */
+    public boolean isLazy() {
+        return lazy;
+    }
+
+    /**
+     * Set the lazy mode
+     * 
+     * @param isLazy A boolean for the lazy mode, where true is lazy on
+     */
+    public void setLazy(boolean isLazy) {
+        lazy = isLazy;
     }
 
     protected WPI_TalonSRX getTalonSRX() {

@@ -12,11 +12,6 @@ import com.revrobotics.CANSparkMax;
  * FRC 254.
  */
 public class NomadTalonSRX extends NomadMotor {
-    /** This decides if the talon should operate in lazy mode. */
-    protected boolean lazy = false;
-
-    protected double lastPower = Double.NaN;
-    protected ControlMode lastMode = null;
 
     /**
      * Constructs a TalonSRX, reverts it to factory default, and sets brake mode.
@@ -66,24 +61,6 @@ public class NomadTalonSRX extends NomadMotor {
     public NomadTalonSRX(int port, boolean inverted, NomadVictorSPX master) {
         this(port, inverted);
         follow(master);
-    }
-
-    /**
-     * Check if the motor controller is lazy
-     * 
-     * @return Whether the motor controller is lazy
-     */
-    public boolean isLazy() {
-        return lazy;
-    }
-
-    /**
-     * Set the lazy mode
-     * 
-     * @param isLazy A boolean for the lazy mode, where true is lazy on
-     */
-    public void setLazy(boolean isLazy) {
-        lazy = isLazy;
     }
 
     /**
