@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
  * This class is an encapsulation of WPI_VictorSPX that add a couple
  * constructors for forcing common settings.
  */
-public class NomadVictorSPX extends WPI_VictorSPX {
+public class NomadVictorSPX extends NomadMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -21,7 +21,7 @@ public class NomadVictorSPX extends WPI_VictorSPX {
      * @param port The CAN ID of this Victor
      */
     public NomadVictorSPX(int port) {
-        super(port);
+        super(new WPI_VictorSPX(port));
         configFactoryDefault();
         setNeutralMode(NeutralMode.Brake);
         setSafetyEnabled(false);

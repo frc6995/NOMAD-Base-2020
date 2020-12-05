@@ -9,7 +9,10 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -81,7 +84,41 @@ public class NomadMotor {
         }
     }
 
-    
+    public void follow(NomadTalonSRX master){
+        if (talon != null){
+            talon.follow(master.getTalonSRX());
+        }
+        else if (victor != null){
+            victor.follow(master.getTalonSRX());
+        }        
+    }
+
+    public void follow(NomadVictorSPX master){
+        if (talon != null){
+            talon.follow(master.getVictorSPX());
+        }
+        else if (victor != null){
+            victor.follow(master.getVictorSPX());
+        }
+    }
+
+    public void follow(NomadTalonSRX master, FollowerType followerType){
+        if (talon != null){
+            talon.follow(master.getTalonSRX(), followerType);
+        }
+        else if (victor != null){
+            victor.follow(master.getTalonSRX(), followerType);
+        }
+    }
+
+    public void follow(NomadVictorSPX master, FollowerType followerType){
+        if (talon != null){
+            talon.follow(master.getVictorSPX(), followerType);
+        }
+        else if (victor != null){
+            victor.follow(master.getVictorSPX(), followerType);
+        }
+    }
 
     protected WPI_TalonSRX getTalonSRX() {
         return talon;
