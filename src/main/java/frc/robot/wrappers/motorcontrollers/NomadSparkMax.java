@@ -1,7 +1,7 @@
 package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;;
+import com.revrobotics.ControlType;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors

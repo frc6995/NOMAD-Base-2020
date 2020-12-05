@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.ControlType;
 
 /**
  * Add your docs here.
@@ -140,6 +141,21 @@ public class NomadMotor {
      */
     public void setLazy(boolean isLazy) {
         lazy = isLazy;
+    }
+
+    public void set(ControlMode mode, double value){
+        if (talon != null){
+            talon.set(mode, value);
+        }
+        else if (victor != null){
+            victor.set(mode, value);
+        }
+    }
+
+    public void set(ControlType controlType, double setpoint){
+        if (sparkMax != null){
+            sparkMax.set(controlType, setpoint);
+        }
     }
 
     protected WPI_TalonSRX getTalonSRX() {
