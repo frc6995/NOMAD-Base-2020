@@ -7,8 +7,12 @@
 
 package frc.robot.wrappers.motorcontrollers;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.wpilibj.PIDController;
+
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -160,7 +164,16 @@ public class NomadMotor {
 
     public void set(ControlType controlType, double setpoint){
         if (sparkMax != null){
-            sparkMax.set(controlType, setpoint);
+            sparkMax.getPIDController().setReference(setpoint, controlType);
+        }
+    }
+
+    public CANPIDController getPIDController(){
+        if (sparkMax != null){
+            return sparkMax.getPIDController();
+        }
+        else{
+            return null;
         }
     }
 
