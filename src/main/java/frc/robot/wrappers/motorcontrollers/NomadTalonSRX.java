@@ -2,14 +2,16 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 
 /**
  * This class is an encapsulation of WPI_TalonSRX that add a couple constructors
  * for forcing common settings. It takes inspiration for the lazy feature from
  * FRC 254.
  */
-public class NomadTalonSRX extends WPI_TalonSRX {
+public class NomadTalonSRX extends NomadMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -21,11 +23,11 @@ public class NomadTalonSRX extends WPI_TalonSRX {
      * 
      * @param port The CAN ID of this Talon
      */
-    public NomadTalonSRX(int port) {
-        super(port);
-        configFactoryDefault();
+    public NomadTalonSRX(int port) {        
+        super(new WPI_TalonSRX(port));
+        getTalonSRX().configFactoryDefault();
         setNeutralMode(NeutralMode.Brake);
-        setSafetyEnabled(false);
+        getTalonSRX().setSafetyEnabled(false);
     }
 
     /**
