@@ -60,6 +60,18 @@ public class NomadMotor {
         }
     }
 
+    public void configFactoryDefault(){
+        if (talon != null){
+            talon.configFactoryDefault();
+        }
+        else if (victor != null){
+            victor.configFactoryDefault();
+        }
+        else if (sparkMax != null){
+            sparkMax.restoreFactoryDefaults();
+        }
+    }
+
     protected WPI_TalonSRX getTalonSRX() {
         return talon;
     }
