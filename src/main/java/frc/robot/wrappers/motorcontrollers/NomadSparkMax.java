@@ -2,12 +2,14 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
  * for forcing common settings.
  */
-public class NomadSparkMax extends CANSparkMax {
+public class NomadSparkMax extends NomadMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -20,8 +22,8 @@ public class NomadSparkMax extends CANSparkMax {
      * @param port The CAN ID of this SparkMAX
      */
     public NomadSparkMax(int port) {
-        super(port, MotorType.kBrushless);
-        restoreFactoryDefaults();
+        super(new CANSparkMax(port, MotorType.kBrushless));
+        configFactoryDefault();
         setIdleMode(IdleMode.kBrake);
     }
 

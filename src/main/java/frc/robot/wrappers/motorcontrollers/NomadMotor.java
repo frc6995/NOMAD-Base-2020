@@ -107,6 +107,12 @@ public class NomadMotor {
         }
     }
 
+    public void follow(NomadSparkMax master){
+        if (sparkMax != null){
+            sparkMax.follow(master.getSparkMax());
+        }
+    }
+
     public void follow(NomadTalonSRX master, FollowerType followerType){
         if (talon != null){
             talon.follow(master.getTalonSRX(), followerType);
