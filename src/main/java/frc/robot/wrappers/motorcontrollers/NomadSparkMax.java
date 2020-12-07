@@ -2,7 +2,6 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
@@ -21,7 +20,7 @@ public class NomadSparkMax extends NomadMotor {
      * @param port The CAN ID of this SparkMAX
      */
     public NomadSparkMax(int port) {
-        super(new CANSparkMax(port, MotorType.kBrushless));
+        super(new CANSparkMax(port, CANSparkMax.MotorType.kBrushless));
         configFactoryDefault();
         setIdleMode(IdleMode.Brake);
     }
@@ -51,7 +50,7 @@ public class NomadSparkMax extends NomadMotor {
         follow(master);
     }
 
-    public void setMotorType(MotorType type){
+    public void setMotorType(CANSparkMax.MotorType type){
         getSparkMax().setMotorType(type);
     }
 

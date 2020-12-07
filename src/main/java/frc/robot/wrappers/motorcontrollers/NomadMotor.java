@@ -56,6 +56,52 @@ public class NomadMotor {
 
     }
 
+    public enum MotorType{
+        TalonSRX{
+            protected boolean isTalonSRX(){
+                return true;
+            }
+            
+            protected boolean isVictorSPX(){
+                return false;
+            }
+
+            protected boolean isSparkMax(){
+                return false;
+            }
+        },
+        VictorSPX{
+            protected boolean isTalonSRX(){
+                return false;
+            }
+
+            protected boolean isVictorSPX(){
+                return true;
+            }
+
+            protected boolean isSparkMax(){
+                return false;
+            }
+        },
+        SparkMax{
+            protected boolean isTalonSRX(){
+                return false;
+            }
+
+            protected boolean isVictorSPX(){
+                return false;
+            }
+
+            protected boolean isSparkMax(){
+                return true;
+            }
+        };
+
+        protected abstract boolean isTalonSRX();
+        protected abstract boolean isVictorSPX();
+        protected abstract boolean isSparkMax();
+    }
+
     private WPI_TalonSRX talon = null;
     private WPI_VictorSPX victor = null;
     private CANSparkMax sparkMax = null;
@@ -65,104 +111,109 @@ public class NomadMotor {
     protected double lastPower = Double.NaN;
     protected ControlMode lastMode = null;
     
+    protected MotorType motorType;
+
     public NomadMotor(WPI_TalonSRX talonSRX){
         talon = talonSRX;        
+        motorType = MotorType.TalonSRX;
     }
 
     public NomadMotor(WPI_VictorSPX victorSPX){
         victor = victorSPX;
+        motorType = MotorType.VictorSPX;
     }
 
     public NomadMotor(CANSparkMax sparkMax){
         this.sparkMax = sparkMax;
+        motorType = MotorType.SparkMax;
     }
 
     public void setIdleMode(IdleMode mode){
-            if (talon != null){
+            if (motorType.isTalonSRX()){
                 talon.setNeutralMode(mode.getTalonVersion());
             }
-            else if (victor != null){
+            else if (motorType.isVictorSPX()){
                 victor.setNeutralMode(mode.getVictorVersion());
             }
-            else if (sparkMax != null){
+            else if (motorType.isSparkMax()){
                 sparkMax.setIdleMode(mode.getSparkVersion());
             }            
     }
 
 
     public void setInverted(boolean inverted){
-        if (talon != null){
+        if (motorType.isTalonSRX()){
             talon.setInverted(inverted);
         }
-        else if (victor != null){
+        else if (motorType.isVictorSPX()){
             victor.setInverted(inverted);
         }
-        else if (sparkMax != null){
+        else if (motorType.isSparkMax()){
             sparkMax.setInverted(inverted);
         }
     }
 
     public void configFactoryDefault(){
-        if (talon != null){
+        if (motorType.isTalonSRX()){
             talon.configFactoryDefault();
         }
-        else if (victor != null){
+        else if (motorType.isVictorSPX()){
             victor.configFactoryDefault();
         }
-        else if (sparkMax != null){
+        else if (motorType.isSparkMax()){
             sparkMax.restoreFactoryDefaults();
         }
     }
 
     public void setSafetyEnabled(boolean enabled){
-        if (talon != null){
+        if (motorType.isTalonSRX()){
             talon.setSafetyEnabled(enabled);
         }
-        else if (victor != null){
+        else if (motorType.isVictorSPX()){
             victor.setSafetyEnabled(enabled);
         }
     }
 
     public void follow(NomadMotor master){
-        if (master.getTalonSRX() != null){
-            if (talon != null){
+        if (master.motorType.isTalonSRX()){
+            if (motorType.isTalonSRX()){
                 talon.follow(master.getTalonSRX());
             }
-            else if (victor != null){
+            else if (motorType.isVictorSPX()){
                 victor.follow(master.getTalonSRX());
             }            
         }
-        else if (master.getVictorSPX() != null){
-            if (talon != null){
+        else if (master.motorType.isVictorSPX()){
+            if (motorType.isTalonSRX()){
                 talon.follow(master.getVictorSPX());            
             }
-            else if (victor != null){
+            else if (motorType.isVictorSPX()){
                 victor.follow(master.getVictorSPX());
             }
         }
-        else if (master.getSparkMax() != null){
+        else if (master.motorType.isSparkMax()){
             sparkMax.follow(master.getSparkMax());
         }
     }   
 
     public void follow(NomadMotor master, FollowerType followerType){
-        if (master.getTalonSRX() != null){
-            if (talon != null){
+        if (master.motorType.isTalonSRX()){
+            if (motorType.isTalonSRX()){
                 talon.follow(master.getTalonSRX(), followerType);
             }
-            else if (victor != null){
+            else if (motorType.isVictorSPX()){
                 victor.follow(master.getTalonSRX(), followerType);
             }            
         }
-        else if (master.getVictorSPX() != null){
-            if (talon != null){
+        else if (master.motorType.isVictorSPX()){
+            if (motorType.isTalonSRX()){
                 talon.follow(master.getVictorSPX(), followerType);            
             }
-            else if (victor != null){
+            else if (motorType.isVictorSPX()){
                 victor.follow(master.getVictorSPX(), followerType);
             }
         }
-        else if (master.getSparkMax() != null){
+        else if (master.motorType.isSparkMax()){
             sparkMax.follow(master.getSparkMax());
         }
     }  
@@ -186,22 +237,22 @@ public class NomadMotor {
     }
 
     public void set(ControlMode mode, double value){
-        if (talon != null){
+        if (motorType.isTalonSRX()){
             talon.set(mode, value);
         }
-        else if (victor != null){
+        else if (motorType.isVictorSPX()){
             victor.set(mode, value);
         }
     }
 
     public void set(ControlType controlType, double setpoint){
-        if (sparkMax != null){
+        if (motorType.isSparkMax()){
             sparkMax.getPIDController().setReference(setpoint, controlType);
         }
     }
 
     public CANPIDController getPIDController(){
-        if (sparkMax != null){
+        if (motorType.isSparkMax()){
             return sparkMax.getPIDController();
         }
         else{
