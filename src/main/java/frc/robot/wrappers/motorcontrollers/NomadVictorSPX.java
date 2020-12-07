@@ -1,7 +1,6 @@
 package frc.robot.wrappers.motorcontrollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 /**
@@ -23,7 +22,7 @@ public class NomadVictorSPX extends NomadMotor {
     public NomadVictorSPX(int port) {
         super(new WPI_VictorSPX(port));
         configFactoryDefault();
-        setNeutralMode(NeutralMode.Brake);
+        setIdleMode(IdleMode.Brake);
         setSafetyEnabled(false);
     }
 

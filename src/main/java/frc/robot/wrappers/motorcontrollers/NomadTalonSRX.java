@@ -1,10 +1,7 @@
 package frc.robot.wrappers.motorcontrollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANSparkMax;
 
 /**
  * This class is an encapsulation of WPI_TalonSRX that add a couple constructors
@@ -21,7 +18,7 @@ public class NomadTalonSRX extends NomadMotor {
     public NomadTalonSRX(int port) {        
         super(new WPI_TalonSRX(port));
         configFactoryDefault();
-        setNeutralMode(NeutralMode.Brake);
+        setIdleMode(IdleMode.Brake);
         setSafetyEnabled(false);
     }
 

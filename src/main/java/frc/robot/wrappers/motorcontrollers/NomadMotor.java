@@ -9,7 +9,6 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -22,6 +21,41 @@ import com.revrobotics.ControlType;
  * Add your docs here.
  */
 public class NomadMotor {
+    public enum IdleMode{
+        Brake {
+            
+            protected NeutralMode getTalonVersion(){
+                return NeutralMode.Brake;
+            }
+
+            protected NeutralMode getVictorVersion(){
+                return NeutralMode.Brake;
+            }
+
+            protected CANSparkMax.IdleMode getSparkVersion(){
+                return CANSparkMax.IdleMode.kBrake;
+            }
+        },
+        Coast{
+            protected NeutralMode getTalonVersion(){
+                return NeutralMode.Coast;
+            }
+
+            protected NeutralMode getVictorVersion(){
+                return NeutralMode.Coast;
+            }
+
+            protected CANSparkMax.IdleMode getSparkVersion(){
+                return CANSparkMax.IdleMode.kCoast;
+            }
+        };
+
+        protected abstract NeutralMode getTalonVersion();
+        protected abstract NeutralMode getVictorVersion();
+        protected abstract CANSparkMax.IdleMode getSparkVersion();
+
+    }
+
     private WPI_TalonSRX talon = null;
     private WPI_VictorSPX victor = null;
     private CANSparkMax sparkMax = null;
@@ -32,7 +66,7 @@ public class NomadMotor {
     protected ControlMode lastMode = null;
     
     public NomadMotor(WPI_TalonSRX talonSRX){
-        talon = talonSRX;
+        talon = talonSRX;        
     }
 
     public NomadMotor(WPI_VictorSPX victorSPX){
@@ -43,20 +77,18 @@ public class NomadMotor {
         this.sparkMax = sparkMax;
     }
 
-    public void setNeutralMode(NeutralMode mode){
-        if (talon != null){
-            talon.setNeutralMode(mode);
-        }
-        else if (victor != null){
-            victor.setNeutralMode(mode);
-        }
+    public void setIdleMode(IdleMode mode){
+            if (talon != null){
+                talon.setNeutralMode(mode.getTalonVersion());
+            }
+            else if (victor != null){
+                victor.setNeutralMode(mode.getVictorVersion());
+            }
+            else if (sparkMax != null){
+                sparkMax.setIdleMode(mode.getSparkVersion());
+            }            
     }
 
-    public void setIdleMode(IdleMode mode){
-            if (sparkMax != null){
-                sparkMax.setIdleMode(mode);
-            }
-    }
 
     public void setInverted(boolean inverted){
         if (talon != null){

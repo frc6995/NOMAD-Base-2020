@@ -2,7 +2,6 @@ package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
@@ -24,7 +23,7 @@ public class NomadSparkMax extends NomadMotor {
     public NomadSparkMax(int port) {
         super(new CANSparkMax(port, MotorType.kBrushless));
         configFactoryDefault();
-        setIdleMode(IdleMode.kBrake);
+        setIdleMode(IdleMode.Brake);
     }
 
     /**
