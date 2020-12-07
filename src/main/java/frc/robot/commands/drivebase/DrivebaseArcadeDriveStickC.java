@@ -33,9 +33,7 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
   public void execute() {
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
-      drivebaseS.arcadeDriveController(
-        driveStick.getFwdBackAxisValue(), 
-        driveStick.getLeftRightAxisValue()
+      drivebaseS.arcadeDriveController(driveStick.getRawAxis(1), driveStick.getRawAxis(0)
       ).clamp()
     );
   }

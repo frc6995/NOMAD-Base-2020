@@ -23,14 +23,15 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
+import frc.robot.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 
 /**
  * Add your docs here.
  */
 public class DrivebaseSTest {
-    NomadTalonSRX leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
-    NomadTalonSRX rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
+    NomadSparkMax leftTalonSRX = Mockito.mock(NomadSparkMax.class);
+    NomadSparkMax rightTalonSRX = Mockito.mock(NomadSparkMax.class);
     
     
     DrivebaseS drivebaseSTest;
@@ -63,8 +64,8 @@ public class DrivebaseSTest {
         //doNothing().when(leftTalonSRX).set(Mockito.eq(ControlMode.PercentOutput), anyDouble());
         //doNothing().when(rightTalonSRX).set(Mockito.eq(ControlMode.PercentOutput), anyDouble());
         drivebaseSTest.drivePercentages(testWheelPercentages);
-        verify(leftTalonSRX).set(ControlMode.PercentOutput, testWheelPercentages.getLeftPercentage());
-        verify(rightTalonSRX).set(ControlMode.PercentOutput, testWheelPercentages.getRightPercentage());
+        verify(leftTalonSRX).set(testWheelPercentages.getLeftPercentage());
+        verify(rightTalonSRX).set(testWheelPercentages.getRightPercentage());
         verifyNoMoreInteractions(leftTalonSRX, rightTalonSRX);
     }
 

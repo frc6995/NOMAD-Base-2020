@@ -10,14 +10,17 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
 
 public class DrivebaseS extends SubsystemBase {
-  public NomadTalonSRX leftTalon;
-  public NomadTalonSRX rightTalon;
+  public NomadSparkMax leftTalon;
+  public NomadSparkMax rightTalon;
+  private NomadSparkMax leftBack;
+  private NomadSparkMax rightBack;
   private DriveConstants driveConstants;
   private AutoConstants autoConstants;
 
@@ -27,11 +30,15 @@ public class DrivebaseS extends SubsystemBase {
   public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
     this.driveConstants = driveConstants; // TODO is this right?
     this.autoConstants = autoConstants;
-    leftTalon = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
-    rightTalon = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
+    leftTalon = new NomadSparkMax(12, true);
+    rightTalon = new NomadSparkMax(10, false);
+    leftBack = new NomadSparkMax(13, false);
+    rightBack = new NomadSparkMax(11, true);
+    leftBack.follow(leftTalon);
+    rightBack.follow(rightTalon);
   }
 
-  public DrivebaseS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX){
+  public DrivebaseS(NomadSparkMax leftTalonSRX, NomadSparkMax rightTalonSRX){
     leftTalon = leftTalonSRX;
     rightTalon = rightTalonSRX;
   }
@@ -53,7 +60,13 @@ public class DrivebaseS extends SubsystemBase {
   }
 
   public void drivePercentages(DrivebaseWheelPercentages percentages){
-    leftTalon.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
-    rightTalon.set(ControlMode.PercentOutput, percentages.getRightPercentage());
+    if (Math.abs(percentages.getLeftPercentage()) < 0.1) {
+      percentages.setLeftPercentage(0);
+    }
+    if (Math.abs(percentages.getRightPercentage()) < 0.1) {
+      percentages.setRightPercentage(0);
+    }
+    leftTalon.set(percentages.getLeftPercentage());
+    rightTalon.set(percentages.getRightPercentage());
   }
 }

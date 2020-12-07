@@ -7,23 +7,22 @@
 
 package frc.robot;
 
-import java.sql.DriverAction;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.drivebase.AgitatorSpinC;
+import frc.robot.commands.AgitatorSpinC;
+import frc.robot.commands.IntakeSpinC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.AutoConstantsKRen;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
-import frc.robot.subsystems.AgitatorS;
 import frc.robot.controllerprofiles.Usb0ControllerProfile;
+import frc.robot.controllerprofiles.XboxControllerTriggerDriveProfile;
+import frc.robot.subsystems.AgitatorS;
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.utility.inputs.ControllerProfile;
+import frc.robot.subsystems.IntakeS;
 import frc.robot.wrappers.inputdevices.NomadDriverController;
 
 /**
@@ -39,12 +38,15 @@ public class RobotContainer {
   //Subsystems
   private DrivebaseS drivebaseS;
   private AgitatorS agitatorS;
+  private IntakeS intakeS;
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
   private AgitatorSpinC agitatorSpinC;
-  private Usb0ControllerProfile driverControllerProfile;
+  private IntakeSpinC intakeSpinC;
+  private Usb0ControllerProfile driverControllerProfile = new Usb0ControllerProfile();
   //Controller Profiles
   private OGXboxControllerTriggerDriveProfile ogXboxControllerTriggerDriveProfile;
+  private XboxControllerTriggerDriveProfile triggerDriveProfile;
   //Controllers
   private NomadDriverController driverController;
   /**
@@ -72,33 +74,37 @@ public class RobotContainer {
    */
   private void createSubsystems() {
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
-    agitatorS = new AgitatorS();
+    //agitatorS = new AgitatorS();
+    intakeS = new IntakeS();
   }
   /**
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
-    agitatorSpinC = new AgitatorSpinC(agitatorS, driverController);
+    //agitatorSpinC = new AgitatorSpinC(agitatorS, driverController);
+    intakeSpinC = new IntakeSpinC(intakeS, driverController);
   }
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-   // drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
-    agitatorS.setDefaultCommand(agitatorSpinC);
+    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    //agitatorS.setDefaultCommand(agitatorSpinC);
+    intakeS.setDefaultCommand(intakeSpinC);
   }
   /**
    * Instantiates the various controller profiles for optional use.
    */
   private void createControllerProfiles() {
     ogXboxControllerTriggerDriveProfile = new OGXboxControllerTriggerDriveProfile();
+    triggerDriveProfile = new XboxControllerTriggerDriveProfile();
   }
   /**
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadDriverController(driverControllerProfile, ogXboxControllerTriggerDriveProfile);
+    driverController = new NomadDriverController(driverControllerProfile, triggerDriveProfile);
   }
 
   /**
