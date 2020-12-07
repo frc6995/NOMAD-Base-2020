@@ -1,5 +1,7 @@
 package frc.robot.wrappers.motorcontrollers;
 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
  * for forcing common settings.
@@ -14,8 +16,8 @@ public class NomadSparkMaxBrushed extends NomadSparkMax {
     public NomadSparkMaxBrushed(int port) {
         super(port);
         setMotorType(MotorType.kBrushed);
-        restoreFactoryDefaults();
-        setIdleMode(IdleMode.kBrake);
+        configFactoryDefault();
+        setIdleMode(IdleMode.Brake);
     }
 
     /**

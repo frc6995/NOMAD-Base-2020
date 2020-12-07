@@ -51,22 +51,8 @@ public class NomadSparkMax extends NomadMotor {
         follow(master);
     }
 
-    /**
-     * Check if the motor controller is lazy
-     * 
-     * @return Whether the motor controller is lazy
-     */
-    public boolean isLazy() {
-        return lazy;
-    }
-
-    /**
-     * Set the lazy mode
-     * 
-     * @param isLazy A boolean for the lazy mode, where true is lazy on
-     */
-    public void setLazy(boolean isLazy) {
-        lazy = isLazy;
+    public void setMotorType(MotorType type){
+        getSparkMax().setMotorType(type);
     }
 
     /**

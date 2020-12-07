@@ -65,24 +65,6 @@ public class NomadVictorSPX extends NomadMotor {
     }
 
     /**
-     * Check if the motor controller is lazy
-     * 
-     * @return Whether the motor controller is lazy
-     */
-    public boolean isLazy() {
-        return lazy;
-    }
-
-    /**
-     * Set the lazy mode
-     * 
-     * @param isLazy A boolean for the lazy mode, where true is lazy on
-     */
-    public void setLazy(boolean isLazy) {
-        lazy = isLazy;
-    }
-
-    /**
      * Sets the appropriate output on the talon, depending on the mode. If in lazy
      * mode, it will not call set unless the value or mode is different.
      * 
