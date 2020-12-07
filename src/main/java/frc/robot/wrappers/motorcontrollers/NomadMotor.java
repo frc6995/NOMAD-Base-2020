@@ -123,47 +123,49 @@ public class NomadMotor {
         }
     }
 
-    public void follow(NomadTalonSRX master){
-        if (talon != null){
-            talon.follow(master.getTalonSRX());
+    public void follow(NomadMotor master){
+        if (master.getTalonSRX() != null){
+            if (talon != null){
+                talon.follow(master.getTalonSRX());
+            }
+            else if (victor != null){
+                victor.follow(master.getTalonSRX());
+            }            
         }
-        else if (victor != null){
-            victor.follow(master.getTalonSRX());
-        }        
-    }
-
-    public void follow(NomadVictorSPX master){
-        if (talon != null){
-            talon.follow(master.getVictorSPX());
+        else if (master.getVictorSPX() != null){
+            if (talon != null){
+                talon.follow(master.getVictorSPX());            
+            }
+            else if (victor != null){
+                victor.follow(master.getVictorSPX());
+            }
         }
-        else if (victor != null){
-            victor.follow(master.getVictorSPX());
-        }
-    }
-
-    public void follow(NomadSparkMax master){
-        if (sparkMax != null){
+        else if (master.getSparkMax() != null){
             sparkMax.follow(master.getSparkMax());
         }
-    }
+    }   
 
-    public void follow(NomadTalonSRX master, FollowerType followerType){
-        if (talon != null){
-            talon.follow(master.getTalonSRX(), followerType);
+    public void follow(NomadMotor master, FollowerType followerType){
+        if (master.getTalonSRX() != null){
+            if (talon != null){
+                talon.follow(master.getTalonSRX(), followerType);
+            }
+            else if (victor != null){
+                victor.follow(master.getTalonSRX(), followerType);
+            }            
         }
-        else if (victor != null){
-            victor.follow(master.getTalonSRX(), followerType);
+        else if (master.getVictorSPX() != null){
+            if (talon != null){
+                talon.follow(master.getVictorSPX(), followerType);            
+            }
+            else if (victor != null){
+                victor.follow(master.getVictorSPX(), followerType);
+            }
         }
-    }
-
-    public void follow(NomadVictorSPX master, FollowerType followerType){
-        if (talon != null){
-            talon.follow(master.getVictorSPX(), followerType);
+        else if (master.getSparkMax() != null){
+            sparkMax.follow(master.getSparkMax());
         }
-        else if (victor != null){
-            victor.follow(master.getVictorSPX(), followerType);
-        }
-    }
+    }  
 
     /**
      * Check if the motor controller is lazy
