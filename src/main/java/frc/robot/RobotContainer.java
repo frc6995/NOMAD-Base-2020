@@ -7,15 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
-import frc.robot.constants.AutoConstants;
-import frc.robot.constants.AutoConstantsKRen;
-import frc.robot.constants.DriveConstants;
-import frc.robot.constants.DriveConstantsKRen;
-import frc.robot.constants.DriverStationConstants;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.DrivebaseTalonVictorS;
 //import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
 
@@ -26,63 +19,13 @@ import frc.robot.subsystems.DrivebaseTalonVictorS;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //Constants Files
-  private AutoConstants autoConstants;
-  private DriveConstants driveConstants;
-  //Subsystems
   private DrivebaseTalonVictorS drivebaseS;
   //Commands
-  private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
-
-  private /*NomadMappedGenericHID*/ XboxController driverController;
   /**
    * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
   public RobotContainer() {
-    createConstantsFiles();
-    createSubsystems();
-    createControllers();
-  }
-
-  /**
-   * Creates the constants files for each subsystem.
-   */
-  private void createConstantsFiles() {
-    driveConstants = new DriveConstantsKRen();
-    autoConstants = new AutoConstantsKRen(driveConstants);
-  }
-  /**
-   * Creates the subsystem.
-   */
-  private void createSubsystems() {
-    drivebaseS = new DrivebaseTalonVictorS(driveConstants, autoConstants);
-  }
-  /**
-   * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
-   */
-  private void createCommands() {
-    //drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController, driveConstants);
-  }
-  /**
-   * Configures the default Commands for the subsystems.
-   */
-  private void configureDefaultCommands() {
-    //drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
-  }
-  /**
-   * Creates the user controllers.
-   */
-  private void createControllers() {
-    driverController = new XboxController(0);//new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT).setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
+    drivebaseS = new DrivebaseTalonVictorS();
   }
 
   /**
@@ -92,11 +35,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return drivebaseArcadeDriveStickC;
+    return new RunCommand(() -> {}, drivebaseS);
   }
 
-/*public NomadMappedGenericHID getDriverController() {
-	return new NomadMappedGenericHID(0);//driverController;
-}*/
+
 
 }
