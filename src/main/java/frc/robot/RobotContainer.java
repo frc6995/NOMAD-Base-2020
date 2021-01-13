@@ -17,7 +17,7 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.constants.DriverStationConstants;
 import frc.robot.subsystems.DrivebaseTalonVictorS;
-import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
+//import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -34,7 +34,7 @@ public class RobotContainer {
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
 
-  private NomadMappedGenericHID driverController;
+  private /*NomadMappedGenericHID*/ XboxController driverController;
   /**
    * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
@@ -42,9 +42,6 @@ public class RobotContainer {
     createConstantsFiles();
     createSubsystems();
     createControllers();
-    createCommands();
-    configureButtonBindings();
-    configureDefaultCommands();
   }
 
   /**
@@ -64,19 +61,19 @@ public class RobotContainer {
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
-    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController, driveConstants);
+    //drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController, driveConstants);
   }
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    //drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
   }
   /**
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT).setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
+    driverController = new XboxController(0);//new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT).setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
   }
 
   /**
@@ -98,8 +95,8 @@ public class RobotContainer {
     return drivebaseArcadeDriveStickC;
   }
 
-public NomadMappedGenericHID getDriverController() {
-	return driverController;
-}
+/*public NomadMappedGenericHID getDriverController() {
+	return new NomadMappedGenericHID(0);//driverController;
+}*/
 
 }

@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.DriveConstants;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.DrivebaseTalonVictorS;
-import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class DrivebaseArcadeDriveStickC extends CommandBase {
   DrivebaseTalonVictorS drivebaseS;
-  NomadMappedGenericHID driveStick;
+  XboxController driveStick;
   DriveConstants driveConstants;
   /**
    * Creates a new DrivebaseArcadeDriveStick.
    */
-  public DrivebaseArcadeDriveStickC(DrivebaseTalonVictorS drivebase, NomadMappedGenericHID stick, DriveConstants driveConstants) {
+  public DrivebaseArcadeDriveStickC(DrivebaseTalonVictorS drivebase, XboxController stick, DriveConstants driveConstants) {
     drivebaseS = drivebase;
     addRequirements(drivebaseS);
     driveStick = stick;

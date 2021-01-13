@@ -40,7 +40,7 @@ public class DrivebaseTalonVictorS extends DrivebaseS<NomadTalonSRX<NomadNoneMot
   private TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
   private AHRS gyro = new AHRS(Port.kMXP);
   private DifferentialDrive differentialDrive;
-  private final DifferentialDriveOdometry differentialDriveOdometry;
+  //private final DifferentialDriveOdometry differentialDriveOdometry;
 
 
   /**
@@ -59,7 +59,7 @@ public class DrivebaseTalonVictorS extends DrivebaseS<NomadTalonSRX<NomadNoneMot
     rightLeader = rightTalonSRX;
     instantiateConfigureMotors(driveConstants, leftLeader, rightLeader, leftFollower, rightFollower);
     differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
-    differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(gyro.getYaw())));
+    //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(gyro.getYaw())));
   }
 
   public DrivebaseTalonVictorS(NomadTalonSRX<NomadNoneMotor> leftTalonSRX, NomadTalonSRX<NomadNoneMotor> rightTalonSRX, NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> leftVictorSPX,
@@ -70,7 +70,7 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
     leftFollower = leftVictorSPX;
     rightFollower = rightVictorSPX;
     instantiateConfigureMotors(driveConstants, leftLeader, rightLeader, leftFollower, rightFollower); //Does not instantiate in this case, just configures.
-    differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(gyro.getYaw())));
+    //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(gyro.getYaw())));
   }
 
   @Override
@@ -78,26 +78,6 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
     // This method will be called once per scheduler run    
   }
 
-  public Pose2d getPose() {
-    return differentialDriveOdometry.getPoseMeters();
-  }
-
-  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(
-    AutoConversionFactors.convertTalonSRXNativeUnitsToWPILibTrajectoryUnits(getLeftVelocity(),
-            driveConstants.getkWheelDiameter(), true, (int) driveConstants.getEncoderCountsPerEncoderRevolution()),
-    AutoConversionFactors.convertTalonSRXNativeUnitsToWPILibTrajectoryUnits(getRightVelocity(),
-            driveConstants.getkWheelDiameter(), true, (int) driveConstants.getEncoderCountsPerEncoderRevolution()));
-
-  }
-
-  public double getRightVelocity() {
-    return leftLeader.getSelectedSensorVelocity();
-  }
-
-  public double getLeftVelocity() {
-    return rightLeader.getSelectedSensorVelocity();
-  }
 
   /**
    * Basic arcade drive. Converts joystick inputs into percent outputs for each
@@ -135,7 +115,7 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
 
   }
 
-  @Override
+  /*@Override
   public double getYaw() {
     
     if(RobotBase.isReal()) {
@@ -143,7 +123,7 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
     } else {
       return 0; // TODO gyro sim equivalent
     }
-  }    
+  }*/    
 
 
 }
