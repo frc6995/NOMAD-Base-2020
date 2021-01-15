@@ -15,6 +15,7 @@ import frc.robot.utility.math.NomadMathUtil;
  * An example driver controller profile that shows 
  */
 public class OGXboxControllerTriggerDriveProfile extends DrivebaseControllerProfile {
+    private final int usbPort = 0;
     private final int fwdBackAxis = 1;
     private final int leftRightAxis = 0;
     private final int leftTriggerAxis = 4;

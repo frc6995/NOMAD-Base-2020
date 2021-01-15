@@ -10,6 +10,6 @@ package frc.robot.utility.inputs;
 /**
  * Add your docs here.
  */
-public interface ControllerProfile {
-    public int getUsbPort();
+public abstract class ControllerProfile {
+    public abstract int getUsbPort();
 }

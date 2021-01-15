@@ -7,7 +7,7 @@ import com.revrobotics.ControlType;;
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
  * for forcing common settings.
  */
-public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMax implements NomadBaseMotor {
+public class NomadSparkMax extends CANSparkMax {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
 
@@ -45,7 +45,7 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
      * @param inverted True for inverted, false if not.
      * @param master   The NomadSparkMAX to follow.
      */
-    public NomadSparkMax(int port, boolean inverted, NomadSparkMax<NomadNoneMotor> master) {
+    public NomadSparkMax(int port, boolean inverted, NomadSparkMax master) {
         this(port, inverted);
         follow(master);
     }
@@ -94,16 +94,5 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
         } else {
             super.getPIDController().setReference(setpoint, type);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setLeader( NomadBaseMotor leader){
-        if (leader instanceof NomadSparkMax) {
-            follow((NomadSparkMax<NomadNoneMotor>) leader);
-        }
-        else if (leader instanceof NomadNoneMotor) {
-            System.out.println("NomadSparkMax tried to follow NomadNoneMotor, skipping...");
-        }
-        else throw new IllegalArgumentException("NomadSparkMax can only follow a NomadSparkMax!");
     }
 }

@@ -7,8 +7,16 @@
 
 package frc.robot.controllerprofiles;
 
+import frc.robot.utility.inputs.ControllerProfile;
+
 /**
  * Add your docs here.
  */
-public class XBoxControllerAgitatorProfile {
+public class Usb0ControllerProfile extends ControllerProfile {
+
+	@Override
+	public int getUsbPort() {
+		// TODO Auto-generated method stub
+        return 0;
+    }
 }

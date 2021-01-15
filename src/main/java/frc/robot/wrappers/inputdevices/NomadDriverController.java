@@ -7,9 +7,6 @@
 
 package frc.robot.wrappers.inputdevices;
 
-import java.util.ResourceBundle.Control;
-
-import edu.wpi.first.wpilibj.Controller;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.utility.inputs.ControllerProfile;
 import frc.robot.utility.inputs.DrivebaseControllerProfile;
