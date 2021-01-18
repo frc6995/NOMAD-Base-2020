@@ -25,7 +25,7 @@ import frc.lib.wrappers.motorcontrollers.NomadBaseMotor;
  * 
  */
 public abstract class DifferentialDrivebaseS extends SubsystemBase {
-  DifferentialDriveOdometry differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
+  DifferentialDriveOdometry differentialDriveOdometry;
   public DriveConstants driveConstants;
   public AutoConstants autoConstants;
   public NomadBaseMotor leftLeader;
@@ -37,6 +37,8 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   public DifferentialDrivebaseS(final DriveConstants driveConstants, final AutoConstants autoConstants) {
     this.driveConstants = driveConstants;
     this.autoConstants = autoConstants;
+
+    //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
   }
 
 
