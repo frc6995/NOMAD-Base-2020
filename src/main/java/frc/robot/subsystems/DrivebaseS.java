@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -51,9 +53,20 @@ public class DrivebaseS extends SubsystemBase {
     left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     right.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
+    left.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms);
+    left.configVelocityMeasurementWindow(1);
+
+    right.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms);
+    right.configVelocityMeasurementWindow(1);
+
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
     if (RobotBase.isSimulation()) { // If our robot is simulated
+      left.setInverted(InvertType.None);
+      left.setSensorPhase(false);
+      right.setInverted(InvertType.None);
+      right.setSensorPhase(false);
+
       // This class simulates our drivetrain's motion around the field.
       m_drivetrainSimulator =
           new DifferentialDrivetrainSim(
@@ -62,7 +75,7 @@ public class DrivebaseS extends SubsystemBase {
               DriveConstantsSim.kDriveGearing,
               DriveConstantsSim.kTrackwidthMeters,
               DriveConstantsSim.kWheelDiameterMeters / 2.0,
-              VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005));
+              null/*VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005)*/);
 
       // The encoder and gyro angle sims let us set simulated sensor readings
       //m_leftEncoderSim = new EncoderSim(m_leftEncoder);
@@ -90,16 +103,22 @@ public class DrivebaseS extends SubsystemBase {
     // We negate the right side so that positive voltages make the right side
     // move forward.
     m_drivetrainSimulator.setInputs(
-        left.get() * RobotController.getBatteryVoltage(),
-        -right.get() * RobotController.getBatteryVoltage());
-    m_drivetrainSimulator.update(0.020);
+        left.getMotorOutputVoltage(),// * RobotController.getBatteryVoltage(),
+        -right.getMotorOutputVoltage());// * RobotController.getBatteryVoltage());
+    m_drivetrainSimulator.update(0.02);
 
     left.getSimCollection().setQuadratureRawPosition((int)(m_drivetrainSimulator.getLeftPositionMeters() / DriveConstantsSim.kEncoderDistancePerPulse));
-    left.getSimCollection().setQuadratureVelocity((int)(m_drivetrainSimulator.getLeftVelocityMetersPerSecond()/DriveConstantsSim.kEncoderDistancePerPulse*10));
+    left.getSimCollection().setQuadratureVelocity((int)(m_drivetrainSimulator.getLeftVelocityMetersPerSecond()/DriveConstantsSim.kEncoderDistancePerPulse/10));
     right.getSimCollection().setQuadratureRawPosition((int)(m_drivetrainSimulator.getRightPositionMeters() / DriveConstantsSim.kEncoderDistancePerPulse));
-    right.getSimCollection().setQuadratureVelocity((int)(m_drivetrainSimulator.getRightVelocityMetersPerSecond()/DriveConstantsSim.kEncoderDistancePerPulse*10));
+    right.getSimCollection().setQuadratureVelocity((int)(m_drivetrainSimulator.getRightVelocityMetersPerSecond()/DriveConstantsSim.kEncoderDistancePerPulse/10));
     
+    SmartDashboard.putNumber("Left Speed", left.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left Desired Speed", m_drivetrainSimulator.getLeftVelocityMetersPerSecond() / DriveConstantsSim.kEncoderDistancePerPulse * 10);
+
     m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
+
+    left.getSimCollection().setBusVoltage(RobotController.getBatteryVoltage());
+    right.getSimCollection().setBusVoltage(RobotController.getBatteryVoltage());
   }
 
   public Pose2d getPose() {
