@@ -7,35 +7,23 @@
 
 package frc.template;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
-import frc.template.constants.AutoConstantsKRen;
 import frc.lib.constants.DriveConstants;
-import frc.template.constants.DriveConstantsKRen;
-import frc.template.constants.DriverStationConstants;
-import frc.template.subsystems.AutonomousDrivebaseS;
-import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
-import frc.lib.utility.inputs.NomadInputMap;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
-import frc.lib.wrappers.inputdevices.NomadMappedGenericHID;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.template.auto.Trajectories;
+import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.template.constants.AutoConstantsDemoAuto;
+import frc.template.constants.AutoConstantsKRen;
+import frc.template.constants.DriveConstantsDemoAuto;
+import frc.template.constants.DriveConstantsKRen;
+import frc.template.subsystems.AutonomousDrivebaseS;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -62,6 +50,7 @@ public class RobotContainer {
     createConstantsFiles();
     createControllers();
     createSubsystems();
+    Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createCommands();
     configureButtonBindings();
     configureDefaultCommands();
@@ -72,8 +61,8 @@ public class RobotContainer {
    * Creates the constants files for each subsystem.
    */
   private void createConstantsFiles() {
-    driveConstants = new DriveConstantsKRen();
-    autoConstants = new AutoConstantsKRen(driveConstants);
+    driveConstants = new DriveConstantsDemoAuto();
+    autoConstants = new AutoConstantsDemoAuto(driveConstants);
   }
   /**
    * Creates the subsystem.
@@ -122,57 +111,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(
-                Constants.DriveConstants.ksVolts,
-                Constants.DriveConstants.kvVoltSecondsPerMeter,
-                Constants.DriveConstants.kaVoltSecondsSquaredPerMeter),
-            Constants.DriveConstants.kDriveKinematics,
-            7);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.DriveConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at (1, 2) facing the +X direction
-            new Pose2d(1, 2, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(2, 3), new Translation2d(3, 1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(4, 2, new Rotation2d(0)),
-            // Pass config
-            config);
-
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
-            exampleTrajectory,
-            drivebaseS::getPose,
-            new RamseteController(
-                Constants.AutoConstants.kRamseteB, Constants.AutoConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.DriveConstants.ksVolts,
-                Constants.DriveConstants.kvVoltSecondsPerMeter,
-                Constants.DriveConstants.kaVoltSecondsSquaredPerMeter),
-            Constants.DriveConstants.kDriveKinematics,
-            drivebaseS::getWheelSpeeds,
-            new PIDController(Constants.DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(Constants.DriveConstants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            drivebaseS::tankDriveVolts,
-            drivebaseS);
-
+    RamseteCommand ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(
+      Trajectories.exampleTrajectory, drivebaseS, driveConstants, autoConstants);
     // Reset odometry to starting pose of trajectory.
-    drivebaseS.resetOdometry(exampleTrajectory.getInitialPose());
+    drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> drivebaseS.tankDriveVolts(0, 0));

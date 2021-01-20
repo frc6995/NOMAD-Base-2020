@@ -13,6 +13,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
@@ -157,8 +158,8 @@ public class DifferentialDrivebaseTalonVictorS extends DifferentialDrivebaseS {
       builder.setSmartDashboardType("DifferentialDrive");
       builder.setActuator(false);
       builder.setSafeState(this::stopMotor);
-      builder.addDoubleProperty("Left Motor Speed", leftLeader::get, null);
-      builder.addDoubleProperty("Right Motor Speed", rightLeader::get, null);
+      builder.addDoubleProperty("Left Motor Speed", this::getLeftSetSpeed, null);
+      builder.addDoubleProperty("Right Motor Speed", this::getRightSetSpeed, null);
     
   }
 
@@ -169,6 +170,30 @@ public class DifferentialDrivebaseTalonVictorS extends DifferentialDrivebaseS {
     rightLeader.stopMotor();
     leftFollower.stopMotor();
     rightFollower.stopMotor();
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    var batteryVoltage = RobotController.getBatteryVoltage();
+    if (Math.max(Math.abs(leftVolts), Math.abs(rightVolts)) > batteryVoltage) {
+      leftVolts *= batteryVoltage / 12.0;
+      rightVolts *= batteryVoltage / 12.0;
+    }
+    leftLeader.setVoltage(leftVolts);
+    rightLeader.setVoltage(rightVolts);
+
+  }
+
+  @Override
+  public double getLeftSetSpeed() {
+    // TODO Auto-generated method stub
+    return leftLeader.getActualOutputPercent();
+  }
+
+  @Override
+  public double getRightSetSpeed() {
+    // TODO Auto-generated method stub
+    return rightLeader.getActualOutputPercent();
   }
 
 }

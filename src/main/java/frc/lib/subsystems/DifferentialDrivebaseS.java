@@ -41,6 +41,8 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
     //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
   }
 
+  public abstract void tankDriveVolts(double left, double right);
+
 
 
   public abstract double getYaw();
@@ -79,6 +81,10 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   public abstract void updateTelemetry();
 
   public abstract void stopMotor();
+
+  public abstract double getLeftSetSpeed();
+
+  public abstract double getRightSetSpeed();
 
   
 }
