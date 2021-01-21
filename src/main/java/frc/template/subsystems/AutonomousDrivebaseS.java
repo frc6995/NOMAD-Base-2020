@@ -5,6 +5,15 @@
 package frc.template.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.I2C.Port;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -23,6 +32,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.VecBuilder;
+import frc.lib.subsystems.DifferentialDrivebaseS;
+import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
+import frc.template.constants.AutoConstants;
+import frc.template.constants.DriveConstants;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -182,8 +198,10 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     builder.setSmartDashboardType("DifferentialDrive");
     builder.setActuator(false);
     builder.setSafeState(this::stopMotor);
-    builder.addDoubleProperty("Left Motor Speed", this::getLeftSetSpeed, null);
-    builder.addDoubleProperty("Right Motor Speed", this::getRightSetSpeed, null);
+    builder.addDoubleProperty("Left Motor Speed", this::getLeftVelocity, null);
+    builder.addDoubleProperty("Right Motor Speed", this::getRightVelocity, null);
+    builder.addDoubleProperty("Left Motor % Speed", this::getLeftSetSpeed, null);
+    builder.addDoubleProperty("Right Motor % Speed", this::getRightSetSpeed, null);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {

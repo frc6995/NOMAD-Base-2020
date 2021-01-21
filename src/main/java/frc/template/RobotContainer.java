@@ -7,9 +7,21 @@
 
 package frc.template;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.lib.auto.NomadAutoCommandGenerator;
@@ -23,6 +35,13 @@ import frc.template.constants.AutoConstantsDemoAuto;
 import frc.template.constants.AutoConstantsKRen;
 import frc.template.constants.DriveConstantsDemoAuto;
 import frc.template.constants.DriveConstantsKRen;
+import frc.template.constants.DriverStationConstants;
+import frc.template.subsystems.AutonomousDrivebaseS;
+import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
+import frc.lib.utility.inputs.NomadInputMaps;
+import frc.lib.utility.inputs.NomadInputMap;
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.lib.wrappers.inputdevices.NomadMappedGenericHID;
 import frc.template.subsystems.AutonomousDrivebaseS;
 
 /**
