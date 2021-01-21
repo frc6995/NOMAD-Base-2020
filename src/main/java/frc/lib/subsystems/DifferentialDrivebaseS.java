@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.template.constants.AutoConstants;
-import frc.template.constants.DriveConstants;
+import frc.lib.constants.AutoConstants;
+import frc.lib.constants.DriveConstants;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadBaseMotor;
 /**
@@ -40,6 +40,8 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
 
     //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
   }
+
+  public abstract void tankDriveVolts(double left, double right);
 
 
 
@@ -79,6 +81,10 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   public abstract void updateTelemetry();
 
   public abstract void stopMotor();
+
+  public abstract double getLeftSetSpeed();
+
+  public abstract double getRightSetSpeed();
 
   
 }

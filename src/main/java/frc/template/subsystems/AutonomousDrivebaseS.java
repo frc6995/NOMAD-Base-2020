@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.I2C.Port;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -35,6 +39,12 @@ import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.template.constants.AutoConstants;
 import frc.template.constants.DriveConstants;
+import edu.wpi.first.wpiutil.math.VecBuilder;
+import frc.lib.constants.AutoConstants;
+import frc.lib.constants.DriveConstants;
+import frc.lib.subsystems.DifferentialDrivebaseS;
+import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 
 public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
   private NomadTalonSRX m_leftFront = new NomadTalonSRX(21);
@@ -190,6 +200,8 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     builder.setSafeState(this::stopMotor);
     builder.addDoubleProperty("Left Motor Speed", this::getLeftVelocity, null);
     builder.addDoubleProperty("Right Motor Speed", this::getRightVelocity, null);
+    builder.addDoubleProperty("Left Motor % Speed", this::getLeftSetSpeed, null);
+    builder.addDoubleProperty("Right Motor % Speed", this::getRightSetSpeed, null);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -202,4 +214,18 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     m_rightFront.setVoltage(-rightVolts);
     m_drive.feed();
   }
+
+  @Override
+  public double getLeftSetSpeed() {
+    // TODO Auto-generated method stub
+    return leftLeader.getActualOutputPercent();
+  }
+
+  @Override
+  public double getRightSetSpeed() {
+    // TODO Auto-generated method stub
+    return rightLeader.getActualOutputPercent();
+  }
+
+  
 }
