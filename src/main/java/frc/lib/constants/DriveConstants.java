@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
+import edu.wpi.first.wpiutil.math.VecBuilder;
+import edu.wpi.first.wpiutil.math.Vector;
 import edu.wpi.first.wpiutil.math.numbers.N2;
+import edu.wpi.first.wpiutil.math.numbers.N7;
 
 /**
  * The DriveConstants class provides a convenient place for teams to hold
@@ -36,9 +39,11 @@ public abstract class DriveConstants {
     /** The CAN ID for the left master motor controller. */
     public abstract int getCanIDLeftDriveMaster();
     public abstract boolean getLeftEncoderReversed();
+    public abstract int[] getLeftEncoderPorts();
     /** The CAN ID for the right master motor controller. */
     public abstract int getCanIDRightDriveMaster();
     public abstract boolean getRightEncoderReversed();
+    public abstract int[] getRightEncoderPorts();
     /** The CAN ID for the left follower motor controller. */
     public abstract int getCanIDLeftDriveFollower();
 
@@ -84,5 +89,9 @@ public abstract class DriveConstants {
         return kDrivetrainPlant;
     }
     public abstract DCMotor getDriveGearbox();
+
+    public abstract double getDriveGearingRatio();
+
+    public abstract Vector<N7> getSimEncoderStdDev();
     
 }   

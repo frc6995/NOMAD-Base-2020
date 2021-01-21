@@ -10,6 +10,9 @@ package frc.template.constants;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import frc.lib.constants.DriveConstants;
+import edu.wpi.first.wpiutil.math.VecBuilder;
+import edu.wpi.first.wpiutil.math.Vector;
+import edu.wpi.first.wpiutil.math.numbers.N7;
 
 /**
  * Add your docs here.
@@ -126,37 +129,57 @@ public class DriveConstantsDefault extends DriveConstants {
 
     @Override
     public boolean getLeftEncoderReversed() {
-        
+
         return false;
     }
 
     @Override
     public boolean getRightEncoderReversed() {
-        
+
         return false;
     }
 
     @Override
     public double getEncoderRevolutionsPerWheelRevolution() {
-        
+
         return 0;
     }
 
     @Override
     public double getKvVoltSecondsPerRadian() {
-        
+
         return 0;
     }
 
     @Override
     public double getKaVoltSecondsSquaredPerRadian() {
-        
+
         return 0;
     }
 
     @Override
     public DCMotor getDriveGearbox() {
-        
+
         return null;
+    }
+
+    @Override
+    public int[] getLeftEncoderPorts() {
+        return null;
+    }
+
+    @Override
+    public int[] getRightEncoderPorts() {
+        return null;
+    }
+
+    @Override
+    public double getDriveGearingRatio() {
+        return 1;
+    }
+
+    @Override
+    public Vector<N7> getSimEncoderStdDev() {
+        return VecBuilder.fill(0, 0, 0, 0, 0, 0, 0);
     }
 }

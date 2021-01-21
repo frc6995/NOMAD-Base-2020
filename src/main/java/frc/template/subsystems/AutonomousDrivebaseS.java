@@ -5,15 +5,6 @@
 package frc.template.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.I2C.Port;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -29,62 +20,29 @@ import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.VecBuilder;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
-import frc.template.constants.AutoConstants;
-import frc.template.constants.DriveConstants;
-import edu.wpi.first.wpiutil.math.VecBuilder;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
-import frc.lib.subsystems.DifferentialDrivebaseS;
-import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
-import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 
 public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
-  private NomadTalonSRX m_leftFront = new NomadTalonSRX(21);
-  private NomadTalonSRX m_rightFront = new NomadTalonSRX(22);
+  private NomadTalonSRX leftLeader;
+  private NomadTalonSRX rightLeader;
 
-  private DifferentialDrive m_drive = new DifferentialDrive(m_leftFront, m_rightFront);
+  private DifferentialDrive m_drive;
 
-  private Encoder m_leftEncoder = new Encoder(0, 1, false);
-  private Encoder m_rightEncoder = new Encoder(2, 3, true);
+  private Encoder m_leftEncoder;
+  private Encoder m_rightEncoder;
 
-  private EncoderSim m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-  private EncoderSim m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+  private EncoderSim m_leftEncoderSim;
+  private EncoderSim m_rightEncoderSim;
 
   private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
   private ADXRS450_GyroSim m_gyroSim;
 
-  static final double KvLinear = 1.98;
-  static final double KaLinear = 0.2;
-  static final double KvAngular = 1.5;
-  static final double KaAngular = 0.3;
-  static final double kWheelRadius = Units.inchesToMeters(6);
-  static final double kEncoderResolution = 8192;
-
   // Create the simulation model of our drivetrain.
-  private DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
-      // Create a linear system from our characterization gains.
-      LinearSystemId.identifyDrivetrainSystem(KvLinear, KaLinear, KvAngular, KaAngular), DCMotor.getCIM(2), // The track
-                                                                                                            // width is
-                                                                                                            // 0.7112
-                                                                                                            // meters.
-      7.29, // 7.29:1 gearing reduction.
-      0.7112, // 2 NEO motors on each side of the drivetrain.
-      kWheelRadius, // The robot uses 3" radius wheels.
-
-      // The standard deviations for measurement noise:
-      // x and y: 0.001 m
-      // heading: 0.001 rad
-      // l and r velocity: 0.1 m/s
-      // l and r position: 0.005 m
-      VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+  private DifferentialDrivetrainSim m_driveSim;
 
   private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(new Rotation2d());
 
@@ -94,12 +52,36 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
   public AutonomousDrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
     super(driveConstants, autoConstants);
 
-    m_leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
-    m_rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
+    leftLeader = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
+    rightLeader = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
 
-    SmartDashboard.putData("Field", m_field);
+    m_drive = new DifferentialDrive(leftLeader, rightLeader);
 
+    m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
+        driveConstants.getLeftEncoderReversed());
+
+    m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
+        driveConstants.getRightEncoderReversed());
+
+    m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
+    m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
+
+
+    m_leftEncoderSim = new EncoderSim(m_leftEncoder);
+    m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+    
+    m_driveSim = new DifferentialDrivetrainSim(
+        driveConstants.getDrivetrainPlant(),
+        driveConstants.getDriveGearbox(),
+        driveConstants.getDriveGearingRatio(),
+        driveConstants.getkTrackWidthMeters(),
+        driveConstants.getkWheelDiameter()/2,
+        driveConstants.getSimEncoderStdDev());
+
+        
     m_gyroSim = new ADXRS450_GyroSim(gyro);
+    
+    SmartDashboard.putData("Field", m_field);
 
     resetOdometry(new Pose2d());
   }
@@ -114,8 +96,8 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     // Set the inputs to the system. Note that we need to convert
     // the [-1, 1] PWM signal to voltage by multiplying it by the
     // robot controller voltage.
-    m_driveSim.setInputs(m_leftFront.get() * RobotController.getInputVoltage(),
-        -m_rightFront.get() * RobotController.getInputVoltage());
+    m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
+        -rightLeader.get() * RobotController.getInputVoltage());
 
     // Advance the model by 20 ms. Note that if you are running this
     // subsystem in a separate thread or have changed the nominal timestep
@@ -164,14 +146,14 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public void drivePercentages(DrivebaseWheelPercentages percentages) {
-    m_leftFront.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
-    m_rightFront.set(ControlMode.PercentOutput, percentages.getRightPercentage());
+    leftLeader.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
+    rightLeader.set(ControlMode.PercentOutput, percentages.getRightPercentage());
   }
 
   @Override
   public void stopMotor() {
-    m_leftFront.stopMotor();
-    m_rightFront.stopMotor();
+    leftLeader.stopMotor();
+    rightLeader.stopMotor();
   }
 
   public void resetEncoders() {
@@ -210,8 +192,8 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
       leftVolts *= batteryVoltage / 12.0;
       rightVolts *= batteryVoltage / 12.0;
     }
-    m_leftFront.setVoltage(leftVolts);
-    m_rightFront.setVoltage(-rightVolts);
+    leftLeader.setVoltage(leftVolts);
+    rightLeader.setVoltage(-rightVolts);
     m_drive.feed();
   }
 
@@ -227,5 +209,4 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     return rightLeader.getActualOutputPercent();
   }
 
-  
 }

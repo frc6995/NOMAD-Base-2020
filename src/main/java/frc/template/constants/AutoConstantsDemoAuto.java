@@ -39,10 +39,6 @@ public class AutoConstantsDemoAuto extends AutoConstants {
     
     }
 
-
-
-    
-
     @Override
     public double getkMaxAccelerationMetersPerSecondSquared() {
         
