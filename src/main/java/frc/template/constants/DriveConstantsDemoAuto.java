@@ -149,13 +149,13 @@ public class DriveConstantsDemoAuto extends DriveConstants {
 
     @Override
     public int[] getLeftEncoderPorts() {
-        int[] ports = { 0, 1 };
+        int[] ports = { 3, 2 };
         return ports;
     }
 
     @Override
     public int[] getRightEncoderPorts() {
-        int[] ports = { 2, 3 };
+        int[] ports = { 6, 5 };
         return ports;
     }
 
