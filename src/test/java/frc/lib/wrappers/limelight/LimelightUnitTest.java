@@ -7,9 +7,8 @@
 
 package frc.lib.wrappers.limelight;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import frc.lib.wrappers.limelight.Limelight.LedState;
 
@@ -27,7 +26,7 @@ public class LimelightUnitTest {
         
         Limelight tester = new Limelight("name");
 
-        assertEquals("Has target test", false, tester.hasTarget());        
+        assertEquals(false, tester.hasTarget(), "Has target test");        
     }
     
     /**
@@ -38,7 +37,7 @@ public class LimelightUnitTest {
     public void offsetTest(){
         Limelight tester = new Limelight("name");        
 
-        assertEquals("X offset test", 0, tester.getXOffset(), 0.1);
+        assertEquals(0, tester.getXOffset(), 0.1, "X offset test");
     }
 
     /**
@@ -51,7 +50,7 @@ public class LimelightUnitTest {
 
         tester.setLedMode(Limelight.LedState.Blink);
 
-        assertEquals("LED Mode test (valid)", LedState.Blink, tester.getLEDMode());
+        assertEquals(LedState.Blink, tester.getLEDMode(), "LED Mode test (valid)");
     }
 
     /**
@@ -64,7 +63,7 @@ public class LimelightUnitTest {
 
         tester.setLedMode(null);
 
-        assertEquals("Null LED Mode test", LedState.Off, tester.getLEDMode());
+        assertEquals(LedState.Off, tester.getLEDMode(), "Null LED Mode test");
     }
 
     /**
@@ -77,6 +76,6 @@ public class LimelightUnitTest {
 
         tester.setLedMode(LedState.getState(15));
 
-        assertEquals("Out of bounds LED Mode test", LedState.Off, tester.getLEDMode());
+        assertEquals(LedState.Off, tester.getLEDMode(), "Out of bounds LED Mode test");
     }
 }

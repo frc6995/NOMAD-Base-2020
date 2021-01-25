@@ -7,20 +7,17 @@
 
 package frc.template.subsystems;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
@@ -30,13 +27,14 @@ import frc.template.constants.DriveConstantsDefault;
 /**
  * Add your docs here.
  */
+
+@ExtendWith(MockitoExtension.class)
 public class DrivebaseTalonVictorSTest {
-    @SuppressWarnings("unchecked")
+
     @Mock
-    NomadTalonSRX leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
-    @SuppressWarnings("unchecked")
+    NomadTalonSRX leftTalonSRX;
     @Mock
-    NomadTalonSRX rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
+    NomadTalonSRX rightTalonSRX;
     
     
     DifferentialDrivebaseTalonVictorS drivebaseSTest;
@@ -47,17 +45,14 @@ public class DrivebaseTalonVictorSTest {
         }
     };
 
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
-
-    @Before
-    public void setup(){
-        MockitoAnnotations.initMocks(this);
+    @BeforeEach
+    public void setup() {
         drivebaseSTest = new DifferentialDrivebaseTalonVictorS(leftTalonSRX, 
         rightTalonSRX, 
         testDriveConstants, new AutoConstantsDefault(testDriveConstants));
         
     }
+    
     @Test
     public void arcadeDriveControllerInsideRangeTest(){
         assertEquals(1.0, drivebaseSTest.arcadeDriveController(1, 0).getLeftPercentage(), 0.001);
