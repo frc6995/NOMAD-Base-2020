@@ -4,7 +4,7 @@
 
 package frc.lib.constants;
 
-/** Add your docs here. */
+/** Subclass this class to describe the operator console-related constants. */
 public class DriverStationConstants {
     
 }

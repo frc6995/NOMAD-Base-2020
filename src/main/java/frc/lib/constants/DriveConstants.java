@@ -26,18 +26,37 @@ import edu.wpi.first.wpiutil.math.numbers.N7;
  * @author Shueja
  */
 public abstract class DriveConstants {
+    /**
+     * The DifferentialDriveKinematics for the drivebase, based on the track width.
+     */
     protected DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(getkTrackWidthMeters());
+    /**
+     * The drivetrain model, based on the characterization constants.
+     */
     protected LinearSystem<N2, N2, N2> kDrivetrainPlant = 
         LinearSystemId.identifyDrivetrainSystem(
         getKvVoltSecondsPerMeter(),
         getKaVoltSecondsSquaredPerMeter(),
         getKvVoltSecondsPerRadian(),
         getKaVoltSecondsSquaredPerRadian());
-
-    public abstract int getDriveControllerFwdBackAxis();
-    public abstract int getDriveControllerLeftRightAxis();
+    /**
+     * The custom axis ID that will be used for the driving forward/back speed.
+     * @return the axis id, defaults to 33
+     */
+    public int getDriveControllerFwdBackAxis() {
+        return 33;
+    }
+    /**
+     * The custom axis ID that will be used for the driving turning.
+     * @return the axis id, defaults to 34
+     */
+    public int getDriveControllerLeftRightAxis() {
+        return 34;
+    }
     /** The CAN ID for the left master motor controller. */
-    public abstract int getCanIDLeftDriveMaster();
+    public int getCanIDLeftDriveMaster() {
+        return 10;
+    }
     public abstract boolean getLeftEncoderReversed();
     public abstract int[] getLeftEncoderPorts();
     /** The CAN ID for the right master motor controller. */

@@ -7,6 +7,8 @@
 
 package frc.template;
 
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,33 +26,35 @@ import frc.template.constants.DriveConstantsDemoAuto;
 import frc.template.subsystems.AutonomousDrivebaseS;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //Constants Files
+  // Constants Files
   private AutoConstants autoConstants;
   private DriveConstants driveConstants;
-  //Subsystems
+  // Subsystems
   private AutonomousDrivebaseS drivebaseS;
-  //Commands
+  // Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
 
-  //private NomadMappedGenericHID driverController;
+  // private NomadMappedGenericHID driverController;
 
   private boolean init = false;
+
   /**
-   * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
+   * The container for the robot. Contains constant files, controllers, subsystems, trajectories, commands,
+   * and default command bindings, to be created in that order.
    */
   public RobotContainer() {
     createConstantsFiles();
-    createControllers();
+    createControllers(driveConstants, NomadMappingEnum.DEFAULT_DRIVE);
     createSubsystems();
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createCommands();
-    configureButtonBindings();
     configureDefaultCommands();
     init = true;
   }
@@ -62,36 +66,38 @@ public class RobotContainer {
     driveConstants = new DriveConstantsDemoAuto();
     autoConstants = new AutoConstantsDemoAuto(driveConstants);
   }
+
   /**
-   * Creates the subsystem.
+   * Creates the subsystems.
    */
   private void createSubsystems() {
     drivebaseS = new AutonomousDrivebaseS(driveConstants, autoConstants);
-    
+
   }
+
   /**
-   * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
+   * Creates the commands that will be started. By creating them once and reusing
+   * them, we should save on garbage collection.
    */
   private void createCommands() {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
   }
+
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-    //drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
   }
+
   /**
-   * Creates the user controllers.
+   * Creates the operator console. In actual use, this method would have more constants files for other subsystems.
+   * @param driveConstants Drivebase constants to use in the input map creation.
+   * @param map The map from NomadInputMaps to select.
    */
-  private void createControllers() {
-    NomadOperatorConsole.init();
+  private void createControllers(DriveConstants driveConstants, NomadMappingEnum map) {
     NomadInputMaps.createMaps(driveConstants);
-    NomadOperatorConsole.setMap(NomadMappingEnum.DEFAULT_DRIVE);
-    /*driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT);
-    NomadInputMaps.createMaps(driverController, driveConstants);
-    selectedMap = DriverStationConstants.DRIVER_CONTROLLER_MAP;*/
-    //driverController.setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
+    NomadOperatorConsole.setMap(map);
   }
 
   /**
@@ -109,20 +115,25 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    RamseteCommand ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(
-      Trajectories.exampleTrajectory, drivebaseS, driveConstants, autoConstants);
+    RamseteCommand ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
+        drivebaseS, driveConstants, autoConstants);
     // Reset odometry to starting pose of trajectory.
     drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> drivebaseS.tankDriveVolts(0, 0));
   }
-
-  public void updateTelemetry(){
-    if(init) {
-      SmartDashboard.putNumber("driveFwdBack", NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
+  /**
+   * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
+   */
+  public void updateTelemetry() {
+    if (init) {
+      SmartDashboard.putNumber("driveFwdBack",
+          NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
       SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
     }
   }
+
+
 
 }

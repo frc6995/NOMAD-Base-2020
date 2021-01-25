@@ -12,17 +12,25 @@ import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 
-/** Add your docs here. */
+/** A class to generate a RamseteCommand for path following from given parameters. */
 public class NomadAutoCommandGenerator {
+    /**
+     * Generate a RamseteCommand. Make sure the pose of the drivebase is reset before running the command.
+     * @param trajectory The Trajectory the robot should follow.
+     * @param drivebaseS The drivebase subsystem.
+     * @param driveConstants The selected drive constants.
+     * @param autoConstants The selected auto constants.
+     * @return ramseteCommand - A RamseteCommand to follow the trajectory. 
+     */
     public static RamseteCommand createRamseteCommand(
-        Trajectory exampleTrajectory,
+        Trajectory trajectory,
         DifferentialDrivebaseS drivebaseS,
         DriveConstants driveConstants,
         AutoConstants autoConstants) {
         
         RamseteCommand ramseteCommand =
         new RamseteCommand(
-            exampleTrajectory,
+            trajectory,
             drivebaseS::getPose,
             new RamseteController(
                 autoConstants.getkRamseteB(), autoConstants.getkRamseteZeta()),

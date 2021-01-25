@@ -13,15 +13,42 @@ import frc.lib.constants.DriveConstants;
  * @author Sammcdo, EliSauder, JoeyFabel, Shueja, AriShashivkopanazak
  */
 public abstract class AutoConstants {
+      /**
+       * The SimpleMotorFeedForward for the drivebase gearboxes.
+       */
       protected SimpleMotorFeedforward TRAJECTORY_FEED_FORWARD;
+      /**
+       * The voltage constraint for the drive motors.
+       */
       protected DifferentialDriveVoltageConstraint AUTO_VOLTAGE_CONSTRAINT;
+      /**
+       * The centripetal acceleration constraint for the drive motors.
+       */
       protected CentripetalAccelerationConstraint CENTRIPETAL_ACCELERATION_CONSTRAINT;
+      /**
+       * The trajectory following config for the drivebase
+       */
       protected TrajectoryConfig TRAJECTORY_CONFIG;
+      /**
+       * The Ramsete controller for trajectory following.
+       */
       protected RamseteController RAMSETE_CONTROLLER;
+      /**
+       * The DriveConstants to provide info about the drivebase.
+       */
       protected DriveConstants driveConstants;
+
+      /**
+       * Creates a new AutoConstants class
+       * @param drivebaseConstants The drive constants to use.
+       */
       public AutoConstants(DriveConstants drivebaseConstants){
             driveConstants = drivebaseConstants;
       }
+      /**
+       * The maximum acceleration, in m/s^2
+       * @return The max acceleration
+       */
       public abstract double getkMaxAccelerationMetersPerSecondSquared();
       public abstract double getkMaxSpeedMetersPerSecond();
       public abstract double getkRamseteB();
