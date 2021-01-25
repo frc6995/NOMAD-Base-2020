@@ -1,6 +1,11 @@
 package frc.template.constants;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.system.LinearSystem;
+import edu.wpi.first.wpilibj.system.plant.DCMotor;
+import edu.wpi.first.wpiutil.math.Vector;
+import edu.wpi.first.wpiutil.math.numbers.N2;
+import edu.wpi.first.wpiutil.math.numbers.N7;
 import frc.lib.constants.DriveConstants;
 
 /**
@@ -10,11 +15,14 @@ public final class DriveConstantsKRen extends DriveConstants {
     @Override
     /** The CAN ID for the left master motor controller. */
     public int getCanIDLeftDriveMaster() {
-        return 10;}
+        return 10;
+    }
 
     @Override
     /** The CAN ID for the right master motor controller. */
-    public int getCanIDRightDriveMaster() {return 11;}
+    public int getCanIDRightDriveMaster() {
+        return 11;
+    }
 
     @Override
     public int getCanIDLeftDriveFollower() {
@@ -33,19 +41,19 @@ public final class DriveConstantsKRen extends DriveConstants {
 
     @Override
     public double getEncoderCountsPerEncoderRevolution() {
-        
+
         return 1024;
     }
 
     @Override
     public double getEncoderCountsPerWheelRevolution() {
-        
+
         return getEncoderCountsPerEncoderRevolution() * 7.0 / 3.0;
     }
 
     @Override
     public double getKsVolts() {
-        
+
         return 1.26;
     }
 
@@ -84,8 +92,7 @@ public final class DriveConstantsKRen extends DriveConstants {
         return 0.6032;
     }
 
-    public final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-            getkTrackWidthMeters());
+    public final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(getkTrackWidthMeters());
 
     @Override
     public DifferentialDriveKinematics getDifferentialDriveKinematics() {
@@ -94,13 +101,69 @@ public final class DriveConstantsKRen extends DriveConstants {
 
     @Override
     public int getDriveControllerFwdBackAxis() {
-        
+
         return 33;
     }
 
     @Override
     public int getDriveControllerLeftRightAxis() {
-        
+
         return 34;
+    }
+
+    @Override
+    public boolean getLeftEncoderReversed() {
+
+        return false;
+    }
+
+    @Override
+    public boolean getRightEncoderReversed() {
+
+        return false;
+    }
+
+    @Override
+    public double getEncoderRevolutionsPerWheelRevolution() {
+
+        return 0;
+    }
+
+    @Override
+    public double getKvVoltSecondsPerRadian() {
+
+        return 0;
+    }
+
+    @Override
+    public double getKaVoltSecondsSquaredPerRadian() {
+
+        return 0;
+    }
+
+    @Override
+    public DCMotor getDriveGearbox() {
+
+        return DCMotor.getCIM(2);
+    }
+
+    @Override
+    public int[] getLeftEncoderPorts() {
+        return null;
+    }
+
+    @Override
+    public int[] getRightEncoderPorts() {
+        return null;
+    }
+
+    @Override
+    public double getDriveGearingRatio() {
+        return 0;
+    }
+
+    @Override
+    public Vector<N7> getSimEncoderStdDev() {
+        return null;
     }
 }
