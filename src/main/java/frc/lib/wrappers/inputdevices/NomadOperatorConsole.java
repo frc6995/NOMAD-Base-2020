@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import frc.lib.utility.inputs.NomadInputMap;
-import frc.template.NomadInputMaps;
+import frc.lib.utility.inputs.NomadInputMaps;
 
 /**
  * This class condenses all operator input into one class.

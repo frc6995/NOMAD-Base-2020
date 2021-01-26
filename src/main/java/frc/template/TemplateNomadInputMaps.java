@@ -9,24 +9,23 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.constants.DriveConstants;
-import frc.template.constants.DriverStationConstants;
+import frc.lib.constants.DriverStationConstants;
 import frc.lib.utility.inputs.NomadInputMap;
+import frc.lib.utility.inputs.NomadInputMaps;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.inputdevices.NomadAxis;
 import frc.lib.wrappers.inputdevices.NomadButton;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
 /** Add your docs here. */
-public class NomadInputMaps {
+public class TemplateNomadInputMaps extends NomadInputMaps {
 
 
     //public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
     /**
      * All NomadAxes and Buttons are by default part of this map. 
      */
-    public static final NomadInputMap uncategorized = new NomadInputMap(NomadMappingEnum.UNCATEGORIZED, "Uncategorized");
     /**
      * The default/template drive map. Other drive maps should follow this standard:
      * Custom Axis 33: FWD/BACK
@@ -38,40 +37,25 @@ public class NomadInputMaps {
     public static NomadInputMap driveControllerOgXboxTriggerDrive = new NomadInputMap(NomadMappingEnum.OG_TRIGGER_DRIVE, "OGXboxDriveUninit");
 
     
-    public static void createMaps(DriveConstants driveConstants) {
+    public static void createMaps(DriveConstants driveConstants, DriverStationConstants driverStationConstants) {
         createControllerMap(baseControllerMap, "BaseDrive");
-        createDriveControllerMap(driveConstants, driveControllerMap, "TemplateDrive");
+        createDriveControllerMap(driveConstants, driverStationConstants, driveControllerMap, "TemplateDrive");
         //Trigger drive only differs in fwd/back axis
-        createTriggerDriveControllerMap(driveConstants, driveControllerTriggerDrive, "TriggerDrive");
-        createOGXboxTriggerDriveControllerMap(driveConstants, driveControllerOgXboxTriggerDrive, "OGXboxDrive");
+        createTriggerDriveControllerMap(driveConstants, driverStationConstants, driveControllerTriggerDrive, "TriggerDrive");
+        createOGXboxTriggerDriveControllerMap(driveConstants, driverStationConstants, driveControllerOgXboxTriggerDrive, "OGXboxDrive");
         
-    }
-
-    public static void repopulateMaps() {
-        for (NomadInputMap map : NomadOperatorConsole.inputEnumMap.values()) {
-            if (map.getType() != NomadMappingEnum.UNCATEGORIZED) {
-                NomadOperatorConsole.populateMap(map);
-            }
-        }
-    }
-
-    public static NomadInputMap createControllerMap(NomadInputMap map, String name){
-        map.withName(name);
-        NomadOperatorConsole.populateMap(map);
-        NomadOperatorConsole.inputEnumMap.put(map.getType(), map);
-        return map;
     }
     /**
      * Change the given map to have the stick drive functionality of the driveControllerMap. Will change the actual given map object..
      * @param map
      * @return
      */
-    public static NomadInputMap createDriveControllerMap(DriveConstants driveConstants, NomadInputMap map, String name) {
+    public static NomadInputMap createDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
         createControllerMap(map, name);
         map.withAxis(
             //new NomadAxis(id, axisName, customAxisBehavior)
             new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", (DoubleSupplier) () -> {
-                return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT, XboxController.Axis.kLeftY.value));
+                return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(driverStationConstants.getDriveControllerUsbPort(), XboxController.Axis.kLeftY.value));
             }))
         .withAxis(
             new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "LEFT/RIGHT", (DoubleSupplier) () -> {
@@ -80,8 +64,8 @@ public class NomadInputMaps {
         return map;
     }
 
-    public static NomadInputMap createTriggerDriveControllerMap(DriveConstants driveConstants, NomadInputMap map, String name) {
-        createDriveControllerMap(driveConstants, map, name); //Add the default left stick drive behavior
+    public static NomadInputMap createTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
+        createDriveControllerMap(driveConstants, driverStationConstants, map, name); //Add the default left stick drive behavior
         map.withAxis( //
             map.getAxis(driveConstants.getDriveControllerFwdBackAxis()) //Change the axis behavior for fwd/back 
             .withCustomBehavior(
@@ -96,8 +80,8 @@ public class NomadInputMaps {
         return map;
     }
     
-    public static NomadInputMap createOGXboxTriggerDriveControllerMap(DriveConstants driveConstants, NomadInputMap map, String name) {
-        createDriveControllerMap(driveConstants, map, name);
+    public static NomadInputMap createOGXboxTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
+        createDriveControllerMap(driveConstants, driverStationConstants, map, name);
         map.withAxis(
             map.getAxis(driveConstants.getDriveControllerFwdBackAxis())
             .withCustomBehavior(

@@ -17,12 +17,14 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
+import frc.lib.constants.DriverStationConstants;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 import frc.template.auto.Trajectories;
 import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.template.constants.AutoConstantsDemoAuto;
 import frc.template.constants.DriveConstantsDemoAuto;
+import frc.template.constants.DriverStationConstantsTemplate;
 import frc.template.subsystems.AutonomousDrivebaseS;
 
 /**
@@ -36,6 +38,7 @@ public class RobotContainer {
   // Constants Files
   private AutoConstants autoConstants;
   private DriveConstants driveConstants;
+  private DriverStationConstants driverStationConstants;
   // Subsystems
   private AutonomousDrivebaseS drivebaseS;
   // Commands
@@ -51,7 +54,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     createConstantsFiles();
-    createControllers(driveConstants, NomadMappingEnum.DEFAULT_DRIVE);
+    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
     createSubsystems();
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createCommands();
@@ -65,6 +68,7 @@ public class RobotContainer {
   private void createConstantsFiles() {
     driveConstants = new DriveConstantsDemoAuto();
     autoConstants = new AutoConstantsDemoAuto(driveConstants);
+    driverStationConstants = new DriverStationConstantsTemplate();
   }
 
   /**
@@ -95,8 +99,8 @@ public class RobotContainer {
    * @param driveConstants Drivebase constants to use in the input map creation.
    * @param map The map from NomadInputMaps to select.
    */
-  private void createControllers(DriveConstants driveConstants, NomadMappingEnum map) {
-    NomadInputMaps.createMaps(driveConstants);
+  private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadMappingEnum map) {
+    TemplateNomadInputMaps.createMaps(driveConstants, driverStationConstants);
     NomadOperatorConsole.setMap(map);
   }
 
