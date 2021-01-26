@@ -33,9 +33,6 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
     protected double lastLeaderOutput = Double.NaN;
     protected double currentLeaderOutput = Double.NaN;
     /**
-     * A quadrature NomadEncoder connected to the Talon.
-     */
-    /**
      * Constructs a TalonSRX, reverts it to factory default, and sets brake mode.
      * 
      * @param port The CAN ID of this Talon
