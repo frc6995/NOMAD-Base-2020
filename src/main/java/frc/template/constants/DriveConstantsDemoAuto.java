@@ -5,15 +5,31 @@
 package frc.template.constants;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.Vector;
+import edu.wpi.first.wpiutil.math.numbers.N2;
 import edu.wpi.first.wpiutil.math.numbers.N7;
 import frc.lib.constants.DriveConstants;
 
 /** Add your docs here. */
-public class DriveConstantsDemoAuto extends DriveConstants {
+public class DriveConstantsDemoAuto implements DriveConstants {
+        /**
+     * The DifferentialDriveKinematics for the drivebase, based on the track width.
+     */
+    protected DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(getkTrackWidthMeters());
+    /**
+     * The drivetrain model, based on the characterization constants.
+     */
+    protected LinearSystem<N2, N2, N2> kDrivetrainPlant = 
+        LinearSystemId.identifyDrivetrainSystem(
+        getKvVoltSecondsPerMeter(),
+        getKaVoltSecondsSquaredPerMeter(),
+        getKvVoltSecondsPerRadian(),
+        getKaVoltSecondsSquaredPerRadian());
 
     @Override
     public int getDriveControllerFwdBackAxis() {
@@ -172,5 +188,47 @@ public class DriveConstantsDemoAuto extends DriveConstants {
         // l and r velocity: 0.1 m/s
         // l and r position: 0.005 m
         return VecBuilder.fill(0.0001, 0.0001, 0.0001, 0.01, 0.01, 0.0005, 0.0005);
+    }
+
+    @Override
+    public double getEncoderCountsPerWheelRevolution() {
+        // TODO Auto-generated method stub
+        return getEncoderCountsPerEncoderRevolution() *
+        getEncoderRevolutionsPerWheelRevolution();
+    }
+
+    @Override
+    public double getEncoderDistancePerPulse() {
+        // TODO Auto-generated method stub
+        return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerEncoderRevolution();
+    }
+
+    @Override
+    public DifferentialDriveKinematics getDifferentialDriveKinematics() {
+        // TODO Auto-generated method stub
+        return kDifferentialDriveKinematics;
+    }
+
+    @Override
+    public LinearSystem<N2, N2, N2> getDrivetrainPlant() {
+        // TODO Auto-generated method stub
+        return kDrivetrainPlant;
+    }
+
+       /**
+     * 
+     * @return The value to multiply the drive controller forward back axis by 
+     */
+    public int getDriveControllerFwdBackAxisMultiplier() { return -1;}
+    /**
+     * 
+     * @return The value to multiply the drive controller turning axis by
+     */
+    public int getDriveControllerLeftRightAxisMultiplier() {return 1;}
+
+    @Override
+    public boolean getDrivebaseRightSideInverted() {
+    // TODO Auto-generated method stub
+    return true;
     }
 }

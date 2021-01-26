@@ -30,7 +30,7 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
   private NomadTalonSRX leftLeader;
   private NomadTalonSRX rightLeader;
 
-  private DifferentialDrive m_drive;
+  //private DifferentialDrive m_drive;
 
   private Encoder m_leftEncoder;
   private Encoder m_rightEncoder;
@@ -55,7 +55,7 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     leftLeader = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
     rightLeader = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
 
-    m_drive = new DifferentialDrive(leftLeader, rightLeader);
+    //m_drive = new DifferentialDrive(leftLeader, rightLeader);
 
     m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
         driveConstants.getLeftEncoderReversed());
@@ -97,7 +97,7 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     // the [-1, 1] PWM signal to voltage by multiplying it by the
     // robot controller voltage.
     m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
-        -rightLeader.get() * RobotController.getInputVoltage());
+    (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.get() * RobotController.getInputVoltage());
 
     // Advance the model by 20 ms. Note that if you are running this
     // subsystem in a separate thread or have changed the nominal timestep
@@ -146,8 +146,8 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public void drivePercentages(DrivebaseWheelPercentages percentages) {
-    leftLeader.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
-    rightLeader.set(ControlMode.PercentOutput, percentages.getRightPercentage());
+    leftLeader.set(percentages.getLeftPercentage());
+    rightLeader.set((driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * percentages.getRightPercentage());
   }
 
   @Override
@@ -193,8 +193,8 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
       rightVolts *= batteryVoltage / 12.0;
     }
     leftLeader.setVoltage(leftVolts);
-    rightLeader.setVoltage(-rightVolts);
-    m_drive.feed();
+    rightLeader.setVoltage((driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightVolts);
+    //m_drive.feed();
   }
 
   @Override

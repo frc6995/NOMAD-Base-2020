@@ -35,7 +35,7 @@ public class NomadAxis {
    * @param id
    */
   public NomadAxis(int id) {
-      super();
+      
       this.id = id;
   }
 
@@ -45,7 +45,7 @@ public class NomadAxis {
    * @param axisName The name.
    */
   public NomadAxis(int id, String axisName) {
-      super();
+      
       this.id = id;
       name = axisName;
   }
@@ -57,7 +57,7 @@ public class NomadAxis {
      * @param customAxisBehavior A function that returns the axis value.
      */
     public NomadAxis(int id, String axisName, DoubleSupplier customAxisBehavior) {
-        super();
+        
         this.id = id;
         name = axisName;
         customBehavior = customAxisBehavior;
