@@ -71,11 +71,11 @@ public class NomadInputMaps {
         map.withAxis(
             //new NomadAxis(id, axisName, customAxisBehavior)
             new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", (DoubleSupplier) () -> {
-                return NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT, XboxController.Axis.kLeftY.value));
+                return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT, XboxController.Axis.kLeftY.value));
             }))
         .withAxis(
             new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "LEFT/RIGHT", (DoubleSupplier) () -> {
-                return NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
+                return driveConstants.getDriveControllerLeftRightAxisMultiplier() * NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
             }));
         return map;
     }

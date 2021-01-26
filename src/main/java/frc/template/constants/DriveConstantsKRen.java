@@ -3,6 +3,7 @@ package frc.template.constants;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
 import edu.wpi.first.wpiutil.math.Vector;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import edu.wpi.first.wpiutil.math.numbers.N7;
@@ -11,7 +12,20 @@ import frc.lib.constants.DriveConstants;
 /**
  * Drive Constants for our 2020 bot KRen
  */
-public final class DriveConstantsKRen extends DriveConstants {
+public final class DriveConstantsKRen implements DriveConstants {
+    /**
+     * The DifferentialDriveKinematics for the drivebase, based on the track width.
+     */
+    protected DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(getkTrackWidthMeters());
+    /**
+     * The drivetrain model, based on the characterization constants.
+     */
+    protected LinearSystem<N2, N2, N2> kDrivetrainPlant = 
+        LinearSystemId.identifyDrivetrainSystem(
+        getKvVoltSecondsPerMeter(),
+        getKaVoltSecondsSquaredPerMeter(),
+        getKvVoltSecondsPerRadian(),
+        getKaVoltSecondsSquaredPerRadian());
     @Override
     /** The CAN ID for the left master motor controller. */
     public int getCanIDLeftDriveMaster() {
@@ -92,11 +106,9 @@ public final class DriveConstantsKRen extends DriveConstants {
         return 0.6032;
     }
 
-    public final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(getkTrackWidthMeters());
-
     @Override
     public DifferentialDriveKinematics getDifferentialDriveKinematics() {
-        return kDriveKinematics;
+        return kDifferentialDriveKinematics;
     }
 
     @Override
@@ -165,5 +177,35 @@ public final class DriveConstantsKRen extends DriveConstants {
     @Override
     public Vector<N7> getSimEncoderStdDev() {
         return null;
+    }
+
+    @Override
+    public double getEncoderDistancePerPulse() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public LinearSystem<N2, N2, N2> getDrivetrainPlant() {
+        // TODO Auto-generated method stub
+        return kDrivetrainPlant;
+    }
+
+    @Override
+    public int getDriveControllerFwdBackAxisMultiplier() {
+        // TODO Auto-generated method stub
+        return 1;
+    }
+
+    @Override
+    public int getDriveControllerLeftRightAxisMultiplier() {
+        // TODO Auto-generated method stub
+        return 1;
+    }
+
+    @Override
+    public boolean getDrivebaseRightSideInverted() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }
