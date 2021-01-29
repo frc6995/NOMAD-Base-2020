@@ -73,7 +73,7 @@ public class AutonomousDrivebaseS extends DifferentialDrivebaseS {
     m_driveSim = new DifferentialDrivetrainSim(
         driveConstants.getDrivetrainPlant(),
         driveConstants.getDriveGearbox(),
-        driveConstants.getDriveGearingRatio(),
+        driveConstants.getEncoderRevolutionsPerWheelRevolution(),
         driveConstants.getkTrackWidthMeters(),
         driveConstants.getkWheelDiameter()/2,
         driveConstants.getSimEncoderStdDev());

@@ -190,11 +190,6 @@ public class DriveConstantsDefault implements DriveConstants {
     }
 
     @Override
-    public double getDriveGearingRatio() {
-        return 1;
-    }
-
-    @Override
     public Vector<N7> getSimEncoderStdDev() {
         return VecBuilder.fill(0, 0, 0, 0, 0, 0, 0);
     }

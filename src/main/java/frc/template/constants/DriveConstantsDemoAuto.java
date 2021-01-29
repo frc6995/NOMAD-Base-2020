@@ -154,7 +154,7 @@ public class DriveConstantsDemoAuto implements DriveConstants {
     @Override
     public double getEncoderRevolutionsPerWheelRevolution() {
 
-        return 8;
+        return 7.29;
     }
 
     @Override
@@ -173,11 +173,6 @@ public class DriveConstantsDemoAuto implements DriveConstants {
     public int[] getRightEncoderPorts() {
         int[] ports = { 2, 3 };
         return ports;
-    }
-
-    @Override
-    public double getDriveGearingRatio() {
-        return 7.29;
     }
 
     @Override

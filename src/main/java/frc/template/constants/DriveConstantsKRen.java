@@ -170,11 +170,6 @@ public final class DriveConstantsKRen implements DriveConstants {
     }
 
     @Override
-    public double getDriveGearingRatio() {
-        return 0;
-    }
-
-    @Override
     public Vector<N7> getSimEncoderStdDev() {
         return null;
     }

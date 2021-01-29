@@ -101,8 +101,6 @@ public interface DriveConstants {
     }*/
     DCMotor getDriveGearbox();
 
-    double getDriveGearingRatio();
-
     Vector<N7> getSimEncoderStdDev();
 
        /**
