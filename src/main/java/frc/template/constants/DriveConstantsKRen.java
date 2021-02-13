@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
+import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.Vector;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import edu.wpi.first.wpiutil.math.numbers.N7;
@@ -68,17 +69,17 @@ public final class DriveConstantsKRen implements DriveConstants {
     @Override
     public double getKsVolts() {
 
-        return 1.26;
+        return 1.12;
     }
 
     @Override
     public double getKvVoltSecondsPerMeter() {
-        return 2.19;
+        return 2.16;
     }
 
     @Override
     public double getKaVoltSecondsSquaredPerMeter() {
-        return 0.683;
+        return 0.469;
     }
 
     @Override
@@ -88,22 +89,22 @@ public final class DriveConstantsKRen implements DriveConstants {
 
     @Override
     public double getkPDriveVel() {
-        return 0.0405;
+        return 2.65;
     }
 
     @Override
     public double getkPDriveVelLeft() {
-        return 0.0405;
+        return 2.65;
     }
 
     @Override
     public double getkPDriveVelRight() {
-        return 0.0405;
+        return 2.65;
     }
 
     @Override
     public double getkTrackWidthMeters() {
-        return 0.6032;
+        return 1.2033;
     }
 
     @Override
@@ -126,19 +127,19 @@ public final class DriveConstantsKRen implements DriveConstants {
     @Override
     public boolean getLeftEncoderReversed() {
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean getRightEncoderReversed() {
 
-        return false;
+        return true;
     }
 
     @Override
     public double getEncoderRevolutionsPerWheelRevolution() {
 
-        return 0;
+        return getEncoderCountsPerWheelRevolution() / getEncoderCountsPerEncoderRevolution();
     }
 
     @Override
@@ -161,23 +162,25 @@ public final class DriveConstantsKRen implements DriveConstants {
 
     @Override
     public int[] getLeftEncoderPorts() {
-        return null;
+        int[] ports = {2,3};
+        return ports;
     }
 
     @Override
     public int[] getRightEncoderPorts() {
-        return null;
+        int[] ports = {5,6};
+        return ports;
     }
 
     @Override
     public Vector<N7> getSimEncoderStdDev() {
-        return null;
+        return VecBuilder.fill(0,0,0,0,0,0,0);
     }
 
     @Override
     public double getEncoderDistancePerPulse() {
         // TODO Auto-generated method stub
-        return 0;
+        return getkWheelDiameter() * Math.PI / getEncoderCountsPerWheelRevolution();
     }
 
     @Override
